@@ -1,6 +1,10 @@
 # human-flavor-pipeline
 
-一条**中文「去 AI 味」集大成流水线**,以 Claude Code skill 形式提供。把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实、语体与一道人味。
+一条**中文「去 AI 味」集大成流水线**,**Claude Code 与 Codex 双入口**。把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实、语体与一道人味。
+
+- **Claude Code** 走 `SKILL.md`(技能格式,支持渐进式加载)
+- **Codex** 走根目录 `AGENTS.md`(由 `SKILL.md` 同源生成,避免漂移)
+- `patterns/` 与 `references/` 数据层两个工具共享
 
 它吸收了 humanizer 类(voice profiles、质量评分矩阵、burstiness、保真闸)与 qu-ai-wei 类(门检、语体阶梯、毛边、AI 不敢写测试、整篇五问自检、空句检测、A–I 模式分组)两条线的精华。
 
@@ -69,19 +73,41 @@
 
 ---
 
-## 安装(Claude Code)
+## 安装与使用
+
+### Claude Code
 
 ```bash
 git clone https://github.com/mjlens-spec/human-flavor-pipeline.git ~/.claude/skills/human-flavor-pipeline
 ```
 
-然后在对话里说「帮我去 AI 味」「这段太 AI 了改一下」「降 AI 味」,或粘贴文本要求改写,skill 会自动触发;也可显式调用。
+新开会话后,说「帮我去 AI 味」「这段太 AI 了改一下」「降 AI 味」,或粘贴文本要求改写,skill 会按 `SKILL.md` 的 `description` 自动触发;也可 `/human-flavor-pipeline` 显式调。
+
+### Codex
+
+Codex 读取 `AGENTS.md`。两种用法:
+
+```bash
+# A. 作为项目级指令:在仓库目录内启动 Codex,根目录 AGENTS.md 自动加载
+git clone https://github.com/mjlens-spec/human-flavor-pipeline.git
+cd human-flavor-pipeline && codex
+
+# B. 作为全局指令:把内容并入(或软链)到 ~/.codex/AGENTS.md
+git clone https://github.com/mjlens-spec/human-flavor-pipeline.git ~/.humanizer
+ln -s ~/.humanizer/AGENTS.md ~/.codex/AGENTS.md   # 或按需 include
+```
+
+然后在 Codex 里贴稿说「去 AI 味」即按同一套六阶段执行。
+
+> `AGENTS.md` 由 `SKILL.md` 经 `scripts/build-agents.sh` 生成。改规程只改 `SKILL.md`,再跑 `bash scripts/build-agents.sh` 重新生成,**不要手改 AGENTS.md**,以免与 Claude Code 入口漂移。
 
 ## 目录结构
 
 ```
 human-flavor-pipeline/
-├── SKILL.md                    六阶段主流程、场景门、语体阶梯、六大润色动作
+├── SKILL.md                    Claude Code 入口 ＋ 唯一事实来源(六阶段主流程)
+├── AGENTS.md                   Codex 入口(由 SKILL.md 经 scripts/build-agents.sh 生成)
+├── scripts/build-agents.sh     SKILL.md → AGENTS.md 同源生成脚本
 ├── CREDITS.md                  署名(含并入的 qu-ai-wei,MIT)
 ├── patterns/
 │   ├── banned-words.md         操作层:A–I 模式分组 ＋ 三级强度词典 ＋ 白名单

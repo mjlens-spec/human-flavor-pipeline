@@ -1,7 +1,9 @@
----
-name: human-flavor-pipeline
-description: 中文「去 AI 味」集大成流水线 —— 把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实、语体与一道人味。两种模式:detect(只读体检,出 AI 味分 0–100 ＋ 人味质量分 0–50 ＋ 热区,不改字)和 full(全六段改写 ＋ 评分 diff 报告)。当用户说「去 AI 味」「改得说人话」「humanize 中文」「降 AI 味 / 降 AI 率」「这段太 AI 了」「润色成人写的」「帮我把这稿去味」,或粘贴一段明显 AI 腔文本要求改写时使用。吸收 humanizer 类(voice profiles、质量评分矩阵、burstiness、保真闸)与 qu-ai-wei 类(门检、语体阶梯、毛边、AI 不敢写测试、整篇五问自检、空句检测、A–I 模式分组)精华。按渠道(飞书 / Notion / 公众号 / 客户方案 / 小红书 / 学术)切换语体与排版。只处理简体中文;只改已有文本,不从零生成;不处理英文正文。
----
+# human-flavor-pipeline · Codex / AGENTS.md 入口
+
+> 本文件由 `scripts/build-agents.sh` 从 `SKILL.md` 自动生成,请勿手改。
+> 改操作规程请改 `SKILL.md`,然后重跑 `bash scripts/build-agents.sh`。
+> 这是给 Codex(及任何读取 AGENTS.md 的 agent)的入口;Claude Code 走同源的 `SKILL.md`。
+> 数据层 `patterns/` 与 `references/` 由两个工具共享,按需读取。
 
 # human-flavor-pipeline · 中文去 AI 味集大成流水线
 

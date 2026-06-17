@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0 — 2026-06-17
+
+跨工具兼容:Claude Code ＋ Codex 双入口。
+
+- 新增 `AGENTS.md`(Codex 入口),由 `SKILL.md` 经 `scripts/build-agents.sh` 同源生成,剥离 Claude 专有 frontmatter、保留正文与数据层引用 —— 单一事实来源,不漂移
+- `SKILL.md` / `references/self-audit.md` 的子 agent 复核改为工具无关措辞(Claude Code 用 Task 工具 / Codex 用其子 agent 机制)
+- README 增「安装与使用」双工具说明(Claude Code skill ＋ Codex AGENTS.md)
+- `patterns/` 与 `references/` 数据层保持工具无关,两端共享
+
 ## 0.3.0 — 2026-06-17
 
 深度无损合并本地 `qu-ai-wei`(MIT,@LifelongLazyLearner),消重只留一个 humanizer skill。
