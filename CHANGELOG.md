@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-06-17
+
+深度无损合并本地 `qu-ai-wei`(MIT,@LifelongLazyLearner),消重只留一个 humanizer skill。
+
+- 并入 `patterns/catalog/` —— qu-ai-wei 的 961 行 51 条 verbatim 模式库、白名单、标点 / 句法、平台模式、品牌声口、参考模型(作深查层,`banned-words.md` 拿不准时下钻)
+- 并入 `tests/` —— 17 组 fixtures ＋ baseline / after 快照(作回归测试集)
+- 新增 `CREDITS.md` 与 `patterns/catalog/LICENSE.qu-ai-wei`,保留 MIT 署名
+- `banned-words.md` / `SKILL.md` 接线深查层;`design-notes.md` 记录合并
+- 原 `qu-ai-wei` 从活跃 skills 归档至 `~/.claude/skills-archive/`
+
 ## 0.2.0 — 2026-06-17
 
 集大成升级 —— 吸收 humanizer 类与 qu-ai-wei 类两条线的精华。

@@ -48,9 +48,18 @@
 6. **有界迭代** —— 强度档位 ＋ 最多 N 遍回改,取代无限催降。
 7. **渠道 ＋ 声口正交** —— 渠道定正式度,声口定句式锋芒。
 
+## 0.3.0:深度无损合并 qu-ai-wei
+
+0.3 版把本地另一个 humanizer 类 skill `qu-ai-wei`(MIT,@LifelongLazyLearner)深度并入,消除重复、只留一个。两者是互补关系而非纯重复:
+
+- **human-flavor-pipeline 的强项**是架构 —— 六阶段管线、detect/full 模式、双评分、voice profiles、场景门。
+- **qu-ai-wei 的强项**是数据 —— 961 行 51 条 verbatim 模式库、细粒度白名单 / 标点 / 句法、品牌声口判定、17 组测试 fixtures。
+
+合并取「我的架构 ＋ 它的数据」:qu-ai-wei 的 references 并入 `patterns/catalog/` 作深查层(操作层 `banned-words.md` 拿不准时下钻),tests 并入 `tests/` 作回归集。署名与 MIT 许可保留(见 `CREDITS.md` 与 `patterns/catalog/LICENSE.qu-ai-wei`)。原 `qu-ai-wei` 已从活跃 skills 归档。
+
 ## 参考与致谢(同类项目)
 
-humanizer-skill(Aboudjem)· shuorenhua(说人话)· Humanizer-zh(op7418)· humanize-text · StealthHumanizer · humanizer-de。本项目取其阶段化、分级、保真、留人味的共识,针对中文专业交付场景重构,非照搬。
+直接并入:**qu-ai-wei**(MIT,见 `CREDITS.md`)。设计共识借鉴:humanizer-skill(Aboudjem)· shuorenhua(说人话)· Humanizer-zh(op7418)· humanize-text · StealthHumanizer · humanizer-de。本项目取其阶段化、分级、保真、留人味的共识,针对中文专业交付场景重构,非照搬。
 
 ## 不做什么
 

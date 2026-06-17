@@ -139,5 +139,9 @@ description: 中文「去 AI 味」集大成流水线 —— 把任意草稿(AI 
 - **只简体中文** —— 不处理英文正文与繁体。
 
 数据层与参考:
-`patterns/banned-words.md` · `patterns/channel-presets.md` · `patterns/voice-profiles.md` · `patterns/style-anchors.md`
-`references/scoring.md` · `references/self-audit.md` · `references/examples.md` · `references/design-notes.md`
+- 操作层:`patterns/banned-words.md` · `patterns/channel-presets.md` · `patterns/voice-profiles.md` · `patterns/style-anchors.md`
+- 深查层(并自 qu-ai-wei,见 `CREDITS.md`):`patterns/catalog/`(51 条 verbatim 模式库、白名单、标点 / 句法、平台 / 品牌声口)
+- 参考:`references/scoring.md` · `references/self-audit.md` · `references/examples.md` · `references/design-notes.md`
+- 回归测试集:`tests/`(17 组 fixtures ＋ baseline / after 快照)
+
+**何时翻深查层**:阶段 1 诊断或阶段 2 剥离中,某条模式拿不准是否触发、需要原文 / 改后对照或语体限定时,查 `patterns/catalog/patterns.md` 对应编号。

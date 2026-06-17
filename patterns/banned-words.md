@@ -4,6 +4,16 @@
 
 替换建议是方向,不是死规定;具体替换服从语体、声口与上下文。
 
+## 两层结构:操作层 ＋ 深查层
+
+- **本文件是操作层** —— A–I 九组的精炼定义 ＋ 三级强度,日常改写按这里快速判断。
+- **深查层在 `catalog/`**(并自 qu-ai-wei,MIT,见 `CREDITS.md`)—— 当一条模式拿不准是否触发、或要看原文 / 改后对照与语体限定时,翻深查层:
+  - `catalog/patterns.md` —— 51 条逐条定义(原文 / 改后对照、语体限定、跨规则 interlock)
+  - `catalog/platform-patterns.md` —— H 组平台 / 文体(公众号 / 小红书 / B 站脚本等)
+  - `catalog/whitelists.md` —— 完整白名单(体育 / 医学 / 技术 / 护肤成分 / 明星昵称等豁免)
+  - `catalog/punctuation.md` · `catalog/syntax.md` —— 标点指纹与句法反模式细则
+  - `catalog/brand-voice.md` —— 品牌广告语体下每条规则的特殊判定
+
 ---
 
 ## 词汇强度分级(贯穿 B / D 组)

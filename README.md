@@ -82,16 +82,19 @@ git clone https://github.com/mjlens-spec/human-flavor-pipeline.git ~/.claude/ski
 ```
 human-flavor-pipeline/
 ├── SKILL.md                    六阶段主流程、场景门、语体阶梯、六大润色动作
+├── CREDITS.md                  署名(含并入的 qu-ai-wei,MIT)
 ├── patterns/
-│   ├── banned-words.md         A–I 模式分组 ＋ 三级强度词典 ＋ 白名单
+│   ├── banned-words.md         操作层:A–I 模式分组 ＋ 三级强度词典 ＋ 白名单
+│   ├── catalog/                深查层:51 条 verbatim 模式库 ＋ 白名单/标点/句法/平台/品牌声口(并自 qu-ai-wei)
 │   ├── channel-presets.md      渠道预设(飞书/Notion/公众号/小红书/学术)
 │   ├── voice-profiles.md       五种声口(句长＋用词＋结构捆绑)
 │   └── style-anchors.md        风格锚点(few-shot,贴你的真文)
-└── references/
-    ├── scoring.md              双评分:AI 味 0–100 ＋ 人味质量 0–50
-    ├── self-audit.md           门检判定 ＋ AI 不敢写测试 ＋ 五问 ＋ 空句检测 ＋ 独立复核
-    ├── examples.md             实战样例(改前/改后 ＋ 打磨报告)
-    └── design-notes.md         集大成清单与同类项目致谢
+├── references/
+│   ├── scoring.md              双评分:AI 味 0–100 ＋ 人味质量 0–50
+│   ├── self-audit.md           门检判定 ＋ AI 不敢写测试 ＋ 五问 ＋ 空句检测 ＋ 独立复核
+│   ├── examples.md             实战样例(改前/改后 ＋ 打磨报告)
+│   └── design-notes.md         集大成清单与同类项目致谢
+└── tests/                      回归测试集:17 组 fixtures ＋ baseline/after 快照(并自 qu-ai-wei)
 ```
 
 ## 用之前建议做一件事
@@ -110,6 +113,10 @@ Stages: **0** gate / lock facts / set register & voice → **1** read-only diagn
 
 See [`references/design-notes.md`](references/design-notes.md) for the full synthesis list and credits.
 
+## Credits
+
+`patterns/catalog/` 与 `tests/` 直接并入 [qu-ai-wei](https://github.com/LifelongLazyLearner/qu-ai-wei)(MIT,@LifelongLazyLearner),许可与署名见 [CREDITS.md](CREDITS.md)。设计共识另借鉴 humanizer-skill、shuorenhua、Humanizer-zh 等。
+
 ## License
 
-MIT — see [LICENSE](LICENSE).
+本项目 MIT — see [LICENSE](LICENSE)。并入的 qu-ai-wei 内容保留其原始 MIT 许可于 `patterns/catalog/LICENSE.qu-ai-wei`。
