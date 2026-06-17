@@ -1,6 +1,8 @@
 # human-flavor-pipeline
 
-一条**中文「去 AI 味」六阶段流水线**,以 Claude Code skill 形式提供。把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实与一道人味。
+一条**中文「去 AI 味」集大成流水线**,以 Claude Code skill 形式提供。把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实、语体与一道人味。
+
+它吸收了 humanizer 类(voice profiles、质量评分矩阵、burstiness、保真闸)与 qu-ai-wei 类(门检、语体阶梯、毛边、AI 不敢写测试、整篇五问自检、空句检测、A–I 模式分组)两条线的精华。
 
 它是 polish / transform 管线,不是生成器 —— 只改已有文本,不替你产生观察、采访与判断。
 
@@ -12,28 +14,31 @@
 
 ```
 草稿 ＋ 渠道标记
+      │  (场景门:快速/聊天 → 轻档直改;正式交付 → 先体检)
+  0 · 门检 / 锁定 / 定调    判来源 ＋ 抽保护区 ＋ 定语体阶梯 ＋ 选渠道声口
+      │                    (人写 → 仅清格式退出)
+  1 · 诊断打分(只读)      AI 味 0–100 ＋ 人味 0–50 ＋ 热区(A–I 分组)
+      │                    (低分 → 跳过 / 轻改)
+  2 · 剥离                先结构 → 后词汇 → 六大润色动作 → 标点
+      │                    (含空句检测)
+  3 · 注入人味            长短句节奏 ＋ 声口/锚点 ＋ 留毛边
       │
-  0 · 门检 / 锁定      判来源 ＋ 抽取保护区 ＋ 定语体
-      │               (人写 → 仅清格式退出)
-  1 · 诊断打分(只读)  AI 味 0–100 ＋ 热区 ＋ 选档
-      │               (低分 → 跳过 / 轻改)
-  2 · 剥离            先结构后词汇 ＋ 标点规整
-      │
-  3 · 注入人味        长短句节奏 ＋ 风格锚点 ＋ 留毛边
-      │
-  4 · 校验            事实保真核对 ＋ 复打分(高风险派独立子 agent)
-      │               (未达标且档位允许 → 回改 ≤N 遍)
-  5 · 报告交付        评分 diff 报告 ＋ 渠道排版
+  4 · 校验(事实优先两遍)  先查事实保真,再查 AI 残余 ＋ AI 不敢写测试 ＋ 五问
+      │                    (高风险派独立子 agent;未达标 → 回改 ≤N 遍)
+  5 · 报告交付            双评分 diff 报告 ＋ 渠道排版
 ```
 
-全程有一条**保护区**侧轨:数字、人名、引用、报价、代码在阶段 0 锁定,阶段 4 逐项核对,绝不漂移。
+全程一条**保护区**侧轨:数字、人名、引用、报价、代码在阶段 0 锁定,阶段 4 逐项核对,绝不漂移。
 
-## 两种模式
+## 两种模式 ＋ 场景门
 
-- **detect** —— 只跑阶段 0–1,出 `AI 味分 0–100` ＋ 热区,**一个字都不改**。适合特稿这种「先要体检」的场景。
+- **detect** —— 只跑阶段 0–1,出 `AI 味分 0–100`(越低越好)＋ `人味质量分 0–50`(越高越好)＋ 热区,**一个字都不改**。
 - **full** —— 跑完整六段,出终稿 ＋ 打磨报告。
+- **场景门** —— 快速 / 聊天场景默认轻档直改、报告压一行;正式交付(提案 / 特稿)默认先体检再改。
 
-用户没指定时,默认先 detect 体检,再问要不要 full。
+## 双评分
+
+只压 AI 味分容易洗成无菌的另一种机器腔。两轴并看 —— AI 味查毛病(越低越好),人味质量查是否真像人(五维:直接性 / 节奏 / 信任读者 / 真实性 / 简洁,越高越好)。详见 [`references/scoring.md`](references/scoring.md)。
 
 ## 强度档位
 
@@ -43,25 +48,28 @@
 | 中 | 16–35 | bounded 删改,先列候选 |
 | 深 | 36–100 | structural 重构 |
 
+## 语体阶梯 ＋ 声口
+
+九种语体按正式度排成阶梯,输出至多偏移一格,防止把特稿洗成公文或把公文洗成段子。声口(直白 / 温和 / 犀利 / 技术 / 叙事)与语体正交,是「句长 ＋ 用词 ＋ 结构」的捆绑,不是词汇皮肤。见 [`patterns/voice-profiles.md`](patterns/voice-profiles.md)。
+
 ## 渠道感知
 
-同一套词典按交付渠道门控:飞书内部 / Notion 对外提案 / 公众号特稿 / 小红书 / 学术,各有不同的语体、标点、人味度。详见 [`patterns/channel-presets.md`](patterns/channel-presets.md)。
+同一套词典按交付渠道门控:飞书内部 / Notion 对外提案 / 公众号特稿 / 小红书 / 学术,各有不同的语体、标点、人味度。见 [`patterns/channel-presets.md`](patterns/channel-presets.md)。
 
-## 七条底线原则
+## 八条底线原则
 
 1. 检测先于改写
-2. 分级 ＋ 语体门控
-3. 事实神圣(保护区 ＋ 收尾核对)
-4. 保留人味(留毛边,但不伪造)
-5. 全程透明(带评分的 diff 报告)
-6. 有界迭代(强度档位,不无限催降)
-7. 渠道感知
+2. 事实神圣(最高优先,保护区 ＋ 收尾核对)
+3. 门检优先(人写只清格式)
+4. 语体阶梯,至多漂移一级
+5. 保留人味(留毛边 ＋ 过 AI 不敢写测试,但不伪造)
+6. 分级 ＋ 语体门控
+7. 全程透明(双评分 diff 报告)
+8. 有界迭代(强度档位,不无限催降)
 
 ---
 
 ## 安装(Claude Code)
-
-把本仓库放进 Claude Code 的 skills 目录即可:
 
 ```bash
 git clone https://github.com/mjlens-spec/human-flavor-pipeline.git ~/.claude/skills/human-flavor-pipeline
@@ -73,14 +81,17 @@ git clone https://github.com/mjlens-spec/human-flavor-pipeline.git ~/.claude/ski
 
 ```
 human-flavor-pipeline/
-├── SKILL.md                    六阶段主流程
+├── SKILL.md                    六阶段主流程、场景门、语体阶梯、六大润色动作
 ├── patterns/
-│   ├── banned-words.md         三级禁用词典 ＋ 结构反模式
-│   ├── channel-presets.md      渠道预设
+│   ├── banned-words.md         A–I 模式分组 ＋ 三级强度词典 ＋ 白名单
+│   ├── channel-presets.md      渠道预设(飞书/Notion/公众号/小红书/学术)
+│   ├── voice-profiles.md       五种声口(句长＋用词＋结构捆绑)
 │   └── style-anchors.md        风格锚点(few-shot,贴你的真文)
 └── references/
-    ├── scoring.md              AI 味分 0–100 评分细则
-    └── design-notes.md         设计说明与同类项目致谢
+    ├── scoring.md              双评分:AI 味 0–100 ＋ 人味质量 0–50
+    ├── self-audit.md           门检判定 ＋ AI 不敢写测试 ＋ 五问 ＋ 空句检测 ＋ 独立复核
+    ├── examples.md             实战样例(改前/改后 ＋ 打磨报告)
+    └── design-notes.md         集大成清单与同类项目致谢
 ```
 
 ## 用之前建议做一件事
@@ -91,15 +102,13 @@ human-flavor-pipeline/
 
 ## English summary
 
-A six-stage **Chinese-language "de-AI" (humanizer) pipeline**, shipped as a Claude Code skill. It rewrites any existing draft (AI-generated, AI-assisted, or AI-sounding) into prose that reads like a careful human wrote it, while preserving facts and one deliberate "human edge."
+A six-stage **Chinese-language "de-AI" (humanizer) pipeline**, shipped as a Claude Code skill, built as a best-of-both-worlds synthesis of humanizer-class tools (voice profiles, quality-scoring matrix, burstiness, fact-preservation) and qu-ai-wei-class skills (human-vs-AI gate, register ladder, "human edge", an "AI-wouldn't-dare-write-this" test, a five-question final audit, empty-sentence detection, A–I pattern groups).
 
-It is a polish/transform pipeline, not a generator. The goal is **not** to beat AI detectors (a fragile arms race) but to make your own AI-assisted drafts genuinely read as human-written.
+It rewrites any existing draft into prose that reads like a careful human wrote it, preserving facts and one deliberate human edge. The goal is **not** to beat AI detectors but to make AI-assisted drafts genuinely read as human-written.
 
-Stages: **0** gate & lock facts → **1** read-only diagnose & score (0–100) → **2** strip (structure first, then lexicon) → **3** inject human texture → **4** verify (fact-preservation + rescore) → **5** scored diff report & channel formatting. A protected-spans rail (numbers, names, quotes, prices, code) is locked at stage 0 and verified at stage 4.
+Stages: **0** gate / lock facts / set register & voice → **1** read-only diagnose (AI-tell 0–100 + human-quality 0–50) → **2** strip (structure → lexicon → six polish moves → punctuation) → **3** inject human texture → **4** verify (facts first, then AI residue + audits) → **5** dual-scored diff report. Two modes (`detect` / `full`), a scene gate, three intensity tiers, a nine-level register ladder (≤1-grade drift), five voice profiles, and channel-aware presets. Chinese (Simplified) only.
 
-Two modes: `detect` (read-only checkup) and `full` (rewrite + report). Three intensity tiers scale edits to the score. Channel-aware presets adapt register/punctuation per delivery target (Feishu / Notion / WeChat / Xiaohongshu / academic). Chinese (Simplified) only.
-
-Design synthesizes consensus patterns from well-regarded open-source humanizers (humanizer-skill, shuorenhua, Humanizer-zh, humanize-text, StealthHumanizer, humanizer-de); see [`references/design-notes.md`](references/design-notes.md).
+See [`references/design-notes.md`](references/design-notes.md) for the full synthesis list and credits.
 
 ## License
 
