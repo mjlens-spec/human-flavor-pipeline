@@ -1,0 +1,30 @@
+schema: 1
+synced_at: 2026-06-18
+verified_at: 2026-06-18
+verification: public GitHub commit pages resolved; local provenance commits exist
+
+upstreams:
+  - name: qu-ai-wei
+    repository: https://github.com/LifelongLazyLearner/qu-ai-wei.git
+    commit: b82808e444b6c1fe3c3c7a6acddd763fd1f5bea8
+    commit_url: https://github.com/LifelongLazyLearner/qu-ai-wei/commit/b82808e444b6c1fe3c3c7a6acddd763fd1f5bea8
+    imported_in: a6131e1eeac9a31d7d798e8e8ea97c9daedf921c
+    license: MIT
+    local_use: patterns/catalog and original regression corpus
+    local_changes: >
+      Reorganized as a deep-reference layer; removed or downgraded unsupported
+      authorship claims; separated expression, preference, fact, workflow, and
+      format axes; added Chinese-context false-positive boundaries and tests.
+
+  - name: humanizer
+    repository: https://github.com/blader/humanizer.git
+    commit: 9600f2b7241cb4eed6ad803abee5ea01d67fe8e4
+    commit_url: https://github.com/blader/humanizer/commit/9600f2b7241cb4eed6ad803abee5ea01d67fe8e4
+    upstream_version: 2.8.0
+    referenced_in: 8ac55ff6f01b8e30faf257a773910feb08e26e79
+    license: MIT
+    local_use: workflow and editorial design reference
+    local_changes: >
+      Reimplemented for Simplified Chinese as a six-stage transform pipeline;
+      no source files copied. Fixed-length burstiness and authorship claims are
+      intentionally not retained.

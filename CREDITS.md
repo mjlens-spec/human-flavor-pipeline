@@ -6,15 +6,15 @@
 
 ### qu-ai-wei — by [@LifelongLazyLearner](https://github.com/LifelongLazyLearner/qu-ai-wei)
 
-`patterns/catalog/` 与 `tests/` 下的内容**直接来自** qu-ai-wei(MIT License,Copyright (c) 2026 @LifelongLazyLearner),在本项目 0.3.0「深度无损合并」时并入,作为细粒度深查层与回归测试集。包含:
+`patterns/catalog/` 与最初的 `tests/` 语料在 0.3.0 从 qu-ai-wei(MIT License,Copyright (c) 2026 @LifelongLazyLearner)并入。0.6.0 起这些文件已经针对本项目的多轴评分、中文误杀边界与事实保护做了本地修改,不应视为上游逐字镜像。包含:
 
-- `patterns/catalog/patterns.md` —— 51 条 A–I 模式核心参考(原文 / 改后对照、语体限定、跨规则 interlock)
+- `patterns/catalog/patterns.md` —— 51 个上游主编号及本项目局部扩展(原文 / 改后对照、语体限定、跨规则 interlock)
 - `patterns/catalog/platform-patterns.md` · `syntax.md` · `punctuation.md` · `whitelists.md` · `brand-voice.md` · `reference-models.md` · `sources.md` · `examples.md`
-- `tests/` —— 17 组 fixtures、baseline / after 快照、校验脚本
+- `tests/` —— 17 组历史 fixtures、baseline / after 快照,以及本项目新增的 29 条 precision 契约与校验脚本
 
 qu-ai-wei 的 MIT 许可全文保留在 `patterns/catalog/LICENSE.qu-ai-wei`。其规则与本项目自有的 `patterns/banned-words.md`(精炼操作层)互为表里 —— catalog 是深查层。
 
-qu-ai-wei 本身受 [`humanizer`](https://github.com/blader/humanizer)(作者 Siqi Chen,MIT,2025)启发,并参考 [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing)。这些上游致谢一并延续。
+qu-ai-wei 本身受 [`humanizer`](https://github.com/blader/humanizer)(作者 Siqi Chen,MIT,2025)启发,并参考 [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing)。这些上游致谢一并延续。两项上游的固定 commit、同步日期与本地改动摘要见 [`UPSTREAM.lock`](UPSTREAM.lock)。
 
 ## 设计共识(未直接并入代码,仅借鉴做法)
 

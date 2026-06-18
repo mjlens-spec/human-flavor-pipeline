@@ -1,0 +1,29 @@
+{"id":"neg_legal_dash","context":"narrative","text":"他停了一下——这句话其实等了三年——才把信递过去。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_functional_dash_business","context":"business_email","text":"本周进度正常——支付链路已压测——退款流程待周五复核。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_technical_mixed","context":"technical_team","text":"这个 pipeline 先读 context window,再记录 latency 和 throughput,字段名要与 API 保持一致。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_public_letter_audience","context":"public_letter","text":"各位同事,谢谢大家过去一年的投入。接下来两周,各位仍按现有排班执行。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_manual_placeholder","context":"manual_template","text":"请填写项目名称:[产品名],负责人:{{owner}},上线日期:XXXX-XX-XX。","expected_patterns":[],"expected_risks":["workflow_placeholder"]}
+{"id":"neg_legal_parallel","context":"formal_enumeration","text":"第一,核对合同主体;第二,确认付款节点;第三,归档盖章版本。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_brand_copy","context":"brand_copy","text":"轻一点。快一点。再远一点。","guards":["dramatic_short_run"],"expected_patterns":[],"expected_risks":[]}
+{"id":"neg_formal_steps","context":"formal_enumeration","text":"首先获取 token,其次构造请求,最后检查响应码。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_business_terms","context":"business_precise","text":"本周完成需求拆解,下周推动项目落地;客服接住咨询后转给销售承接,峰值流量下旧系统撑不住。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_markdown_repo","context":"markdown_repo","text":"## 安装\n运行 `npm install` 后查看 **README**。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_markdown_link_size","context":"markdown_repo","text":"尺码选 XXL,说明见[使用文档](https://example.com/docs)。","expected_patterns":[],"expected_risks":[]}
+{"id":"neg_markdown_plaintext","context":"plain_text","text":"## 安装\n运行 `npm install` 后查看 **README**。","expected_patterns":[],"expected_risks":["format_markdown"]}
+{"id":"neg_utm_manual","context":"plain_text","text":"活动链接:https://example.com/?utm_source=newsletter","expected_patterns":[],"expected_risks":["workflow_url"]}
+{"id":"neg_fake_candor_admission","context":"generic_article","text":"说实话,我上周把预算算错了,这部分责任在我。","guards":["fake_candor"],"expected_patterns":[],"expected_risks":[]}
+{"id":"neg_pseudo_insight_evidence","context":"generic_article","text":"归根结底,真正的问题是数据缺口,因为过去三周的退款记录都没入库。","guards":["pseudo_insight"],"expected_patterns":[],"expected_risks":[]}
+{"id":"neg_title_restatement_lede","context":"news_lede","text":"# 为什么航班延误\n\n航班延误的直接原因是机场在 14:20 暂停起降。","guards":["title_restatement"],"expected_patterns":[],"expected_risks":[]}
+{"id":"neg_change_narration_release_notes","context":"release_notes","text":"这次我把缓存策略改成按租户隔离,下面也调整了迁移步骤。","guards":["change_narration"],"expected_patterns":[],"expected_risks":[]}
+{"id":"neg_assistant_tail_email","context":"email_reply","text":"以上是本周进度。如果你愿意,我还可以再给你补一份风险清单。","guards":["assistant_tail"],"expected_patterns":[],"expected_risks":[]}
+{"id":"pos_fake_candor","context":"generic_article","text":"说实话,我本来不想说,但成功的关键就是坚持。","expected_patterns":["fake_candor"],"expected_risks":[]}
+{"id":"pos_pseudo_insight","context":"generic_article","text":"归根结底,真正的成长不是结果,而是选择。","expected_patterns":["pseudo_insight"],"expected_risks":[]}
+{"id":"pos_short_drama","context":"generic_article","text":"很难。很痛。很真实。然后一切都会变好。","expected_patterns":["dramatic_short_run"],"expected_risks":[]}
+{"id":"pos_title_restatement","context":"generic_article","text":"# 为什么执行总是失败\n\n执行总是失败,是很多团队都会遇到的问题。","expected_patterns":["title_restatement"],"expected_risks":[]}
+{"id":"pos_change_narration","context":"publishable_copy","text":"这次我把开头改短了,下面也调整了结构,读起来会更自然。","expected_patterns":["change_narration"],"expected_risks":[]}
+{"id":"pos_assistant_tail","context":"publishable_copy","text":"以上是本季度复盘。如果你愿意,我还可以再给你一版更正式的。","expected_patterns":["assistant_tail"],"expected_risks":[]}
+{"id":"pos_generic_addressee","context":"single_recipient","text":"希望广大用户理解,也请大家配合,期待各位朋友回复。","expected_patterns":["generic_addressee"],"expected_risks":[]}
+{"id":"pos_empty_jargon","context":"vague_business","text":"我们要拆解价值,接住势能,推动认知落地,形成闭环。","expected_patterns":["empty_business_jargon"],"expected_risks":[]}
+{"id":"pos_dash_overuse","context":"business_email","text":"先确认范围——也就是本周需求——再排人力——也就是研发和测试。","expected_patterns":["dash_overuse"],"expected_risks":[]}
+{"id":"pos_english_mismatch","context":"public_general","text":"请先 check 这个 feature 的 workflow,再确认 deadline。","expected_patterns":["english_audience_mismatch"],"expected_risks":[]}
+{"id":"pos_mechanical_parallel","context":"generic_article","text":"首先明确方向,其次拆分任务,最后总结经验。","expected_patterns":["mechanical_parallel"],"expected_risks":[]}

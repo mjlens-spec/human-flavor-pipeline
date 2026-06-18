@@ -1,12 +1,16 @@
 # human-flavor-pipeline
 
-一条**中文「去 AI 味」集大成流水线**,**Claude Code 与 Codex 双入口**。把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实、语体与一道人味。
+![version](https://img.shields.io/badge/version-0.6.0-blue.svg)
+
+当前版本:v0.6.0
+
+一条**中文「去 AI 味」集大成流水线**,**Claude Code 与 Codex 双入口**。它只判断文本是否需要改,不根据文风猜作者身份;改写时守住事实、语体与作者原有声口。
 
 - **Claude Code** 走 `SKILL.md`(技能格式,支持渐进式加载)
 - **Codex** 走根目录 `AGENTS.md`(由 `SKILL.md` 同源生成,避免漂移)
 - `patterns/` 与 `references/` 数据层两个工具共享
 
-它吸收了 humanizer 类(voice profiles、质量评分矩阵、burstiness、保真闸)与 qu-ai-wei 类(门检、语体阶梯、毛边、AI 不敢写测试、整篇五问自检、空句检测、A–I 模式分组)两条线的精华。
+它吸收了 humanizer 类(voice profiles、质量评分矩阵、节奏校准、保真闸)与 qu-ai-wei 类(改写必要性门检、语体阶梯、毛边、整篇五问、空句检测、模式分组)两条线的精华。上游版本记录见 [`UPSTREAM.lock`](UPSTREAM.lock)。
 
 它是 polish / transform 管线,不是生成器 —— 只改已有文本,不替你产生观察、采访与判断。
 
@@ -17,17 +21,16 @@
 ## 管线一览
 
 ```
-草稿 ＋ 渠道标记
+草稿 ＋ 载体 / 受众 / 文体 / 声口
       │  (场景门:快速/聊天 → 轻档直改;正式交付 → 先体检)
-  0 · 门检 / 锁定 / 定调    判来源 ＋ 抽保护区 ＋ 定语体阶梯 ＋ 选渠道声口
-      │                    (人写 → 仅清格式退出)
-  1 · 诊断打分(只读)      AI 味 0–100 ＋ 人味 0–50 ＋ 热区(A–I 分组)
-      │                    (低分 → 跳过 / 轻改)
+  0 · 门检 / 锁定 / 定调    判改写必要性 ＋ 抽保护区 ＋ 拆四个维度
+      │                    (必要性低 → 停手或只做指定修复)
+  1 · 诊断打分(只读)      AI 味 ＋ 人味 ＋ 个人偏好 ＋ 事实/格式风险
   2 · 剥离                先结构 → 后词汇 → 六大润色动作 → 标点
       │                    (含空句检测)
-  3 · 注入人味            长短句节奏 ＋ 声口/锚点 ＋ 留毛边
+  3 · 注入人味            按内容调节节奏 ＋ 声口/锚点 ＋ 保留原有毛边
       │
-  4 · 校验(事实优先两遍)  先查事实保真,再查 AI 残余 ＋ AI 不敢写测试 ＋ 五问
+  4 · 校验(事实优先两遍)  先查事实保真,再查表达残余 ＋ 原有人味 ＋ 五问
       │                    (高风险派独立子 agent;未达标 → 回改 ≤N 遍)
   5 · 报告交付            双评分 diff 报告 ＋ 渠道排版
 ```
@@ -36,38 +39,38 @@
 
 ## 两种模式 ＋ 场景门
 
-- **detect** —— 只跑阶段 0–1,出 `AI 味分 0–100`(越低越好)＋ `人味质量分 0–50`(越高越好)＋ 热区,**一个字都不改**。
+- **detect** —— 只跑阶段 0–1,出改写必要性、`AI 味分 0–100`、`人味质量分 0–50`、个人偏好与风险项,**一个字都不改**。
 - **full** —— 跑完整六段,出终稿 ＋ 打磨报告。
 - **场景门** —— 快速 / 聊天场景默认轻档直改、报告压一行;正式交付(提案 / 特稿)默认先体检再改。
 
-## 双评分
+## 多轴诊断
 
-只压 AI 味分容易洗成无菌的另一种机器腔。两轴并看 —— AI 味查毛病(越低越好),人味质量查是否真像人(五维:直接性 / 节奏 / 信任读者 / 真实性 / 简洁,越高越好)。详见 [`references/scoring.md`](references/scoring.md)。
+AI 味与人味双评分负责表达质量;个人偏好、事实 / 来源风险、格式 / 载体风险另列,不混入 AI 味。AI 味是编辑启发式,不回答「谁写的」。详见 [`references/scoring.md`](references/scoring.md)。
 
 ## 强度档位
 
-| 档位 | AI 味分 | 改动幅度 |
+| 档位 | 改写必要性 | 改动幅度 |
 |------|---------|----------|
-| 轻 | 0–15 | 仅词汇替换 |
-| 中 | 16–35 | bounded 删改,先列候选 |
-| 深 | 36–100 | structural 重构 |
+| 轻 | 低,或只有偏好 / 格式问题 | 定点修改 |
+| 中 | 多个独立模式成簇出现 | bounded 删改 |
+| 深 | 明确结构问题跨组共现 | structural 重构,仍受事实保护 |
 
 ## 语体阶梯 ＋ 声口
 
-九种语体按正式度排成阶梯,输出至多偏移一格,防止把特稿洗成公文或把公文洗成段子。声口(直白 / 温和 / 犀利 / 技术 / 叙事)与语体正交,是「句长 ＋ 用词 ＋ 结构」的捆绑,不是词汇皮肤。见 [`patterns/voice-profiles.md`](patterns/voice-profiles.md)。
+九种语体按正式度排成阶梯,输出至多偏移一格,防止把特稿洗成公文或把公文洗成段子。声口(直白 / 温和 / 犀利 / 技术 / 叙事)与语体正交,是「节奏 ＋ 用词 ＋ 结构」的捆绑,不是词汇皮肤。见 [`patterns/voice-profiles.md`](patterns/voice-profiles.md)。
 
-## 渠道感知
+## 四维门控
 
-同一套词典按交付渠道门控:飞书内部 / Notion 对外提案 / 公众号特稿 / 小红书 / 学术,各有不同的语体、标点、人味度。见 [`patterns/channel-presets.md`](patterns/channel-presets.md)。
+载体、受众、文体、声口分开判断。Notion / 飞书 / 公众号只决定格式能力,不自动绑定客户方案、内部文档或特稿。见 [`patterns/channel-presets.md`](patterns/channel-presets.md)。
 
 ## 八条底线原则
 
 1. 检测先于改写
 2. 事实神圣(最高优先,保护区 ＋ 收尾核对)
-3. 门检优先(人写只清格式)
+3. 门检优先(必要性低就退场,不猜作者身份)
 4. 语体阶梯,至多漂移一级
-5. 保留人味(留毛边 ＋ 过 AI 不敢写测试,但不伪造)
-6. 分级 ＋ 语体门控
+5. 保留原有人味(没有就报告,不强造)
+6. 分级 ＋ 四维门控
 7. 全程透明(双评分 diff 报告)
 8. 有界迭代(强度档位,不无限催降)
 
@@ -110,19 +113,20 @@ human-flavor-pipeline/
 ├── scripts/build-agents.sh     SKILL.md → AGENTS.md 同源生成脚本
 ├── CREDITS.md                  署名(含并入的 qu-ai-wei,MIT)
 ├── patterns/
-│   ├── banned-words.md         操作层:A–J 模式分组(含 J 江湖气/黑话)＋ 三级强度 ＋ 白名单
+│   ├── banned-words.md         操作层:A–H 表达模式 ＋ I 风险 ＋ J 风格偏好
 │   ├── user-taste.md           个人禁忌层(点名禁词 ＋ 手动改稿习惯,优先级最高)
-│   ├── exemplars.md            范文库:人味正面规则 ＋ 短范文锚点(署名引用)＋ 个人锚点
-│   ├── catalog/                深查层:51 条 verbatim 模式库 ＋ 白名单/标点/句法/平台/品牌声口(并自 qu-ai-wei)
-│   ├── channel-presets.md      渠道预设 ＋ 乙方腔好坏边界
-│   ├── voice-profiles.md       五种声口(句长＋用词＋结构捆绑)
+│   ├── exemplars.md            范文库:人味正面规则 ＋ 原创脱敏短锚点 ＋ 个人锚点
+│   ├── precision-rules.json    production 阈值 / 上下文 / 例外(供 precision 契约加载)
+│   ├── catalog/                深查层:51 个主编号 ＋ 本地扩展/白名单/标点/句法/平台/品牌声口
+│   ├── channel-presets.md      载体/受众/文体/声口拆分 ＋ 乙方腔边界
+│   ├── voice-profiles.md       五种声口(节奏＋用词＋结构捆绑)
 │   └── style-anchors.md        风格锚点(few-shot,贴你的真文)
 ├── references/
-│   ├── scoring.md              双评分:AI 味 0–100 ＋ 人味质量 0–50
-│   ├── self-audit.md           门检判定 ＋ AI 不敢写测试 ＋ 五问 ＋ 空句检测 ＋ 独立复核
+│   ├── scoring.md              多轴诊断:双评分 ＋ 偏好 ＋ 风险
+│   ├── self-audit.md           改写必要性门检 ＋ 原有人味 ＋ 五问 ＋ 独立复核
 │   ├── examples.md             实战样例(改前/改后 ＋ 打磨报告)
 │   └── design-notes.md         集大成清单与同类项目致谢
-└── tests/                      回归测试集:17 组 fixtures ＋ baseline/after 快照(并自 qu-ai-wei)
+└── tests/                      17 组快照 ＋ 29 条 precision 契约 ＋ 自动检查
 ```
 
 ## 用之前建议做一件事
@@ -133,11 +137,11 @@ human-flavor-pipeline/
 
 ## English summary
 
-A six-stage **Chinese-language "de-AI" (humanizer) pipeline**, shipped as a Claude Code skill, built as a best-of-both-worlds synthesis of humanizer-class tools (voice profiles, quality-scoring matrix, burstiness, fact-preservation) and qu-ai-wei-class skills (human-vs-AI gate, register ladder, "human edge", an "AI-wouldn't-dare-write-this" test, a five-question final audit, empty-sentence detection, A–I pattern groups).
+A six-stage Chinese-language editing pipeline for reducing formulaic AI-like prose. It evaluates rewrite necessity rather than claiming authorship, separates expression scores from preference and workflow risks, and preserves facts, register, and the author's existing voice.
 
-It rewrites any existing draft into prose that reads like a careful human wrote it, preserving facts and one deliberate human edge. The goal is **not** to beat AI detectors but to make AI-assisted drafts genuinely read as human-written.
+It rewrites existing drafts while preserving facts and any concrete judgment already present. It never fabricates a personal detail or attitude to satisfy a style test. The goal is **not** to beat AI detectors.
 
-Stages: **0** gate / lock facts / set register & voice → **1** read-only diagnose (AI-tell 0–100 + human-quality 0–50) → **2** strip (structure → lexicon → six polish moves → punctuation) → **3** inject human texture → **4** verify (facts first, then AI residue + audits) → **5** dual-scored diff report. Two modes (`detect` / `full`), a scene gate, three intensity tiers, a nine-level register ladder (≤1-grade drift), five voice profiles, and channel-aware presets. Chinese (Simplified) only.
+Stages: **0** gate / lock facts / separate carrier, audience, register, and voice → **1** read-only multi-axis diagnosis → **2** edit structure and wording → **3** calibrate rhythm without fixed sentence lengths → **4** verify facts first → **5** diff report. Chinese (Simplified) only.
 
 See [`references/design-notes.md`](references/design-notes.md) for the full synthesis list and credits.
 

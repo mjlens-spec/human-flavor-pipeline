@@ -4,12 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-# v0.6.5: 新增 06-12 样本时，如某条 assertion 暂时不达预期，把对应 fixture id 加到
-# KNOWN_GAPS 里，对应的 block-specific assertions 会被跳过（但 tests/after/ 里
-# 对应的输出保留为证据）。基础的 门检 / 终稿 / 打磨报告 presence 检查仍然执行。
-# v0.6.6: 新增 13-17 小红书样本,覆盖 #47b 占位符 / info-block emoji 微模板 /
-# 护肤成分白名单 / 身份标签+CTA 组合 / 老套路 2025-2026 复用。
-# 条目格式："<id>:<v0.6.7 跟进说明>"
+# 06-12 与 13-17 源自上游历史快照。如某条 assertion 暂时不达预期,把 fixture id
+# 加到 KNOWN_GAPS;block-specific assertions 会跳过,但基础结构检查仍会执行。
+# 条目格式:"<id>:<跟进说明>"
 KNOWN_GAPS=()
 
 is_known_gap() {
@@ -56,6 +53,16 @@ for file in tests/after/01-output.md \
   }
 done
 
+if rg -n '^【门检】.*(AI 生成文本|真人文本|AI 辅助)' tests/after; then
+  echo "门检仍在断言作者身份" >&2
+  exit 1
+fi
+
+if rg -n 'v0\.5\.5|AI 不敢写|AI不敢写|看起来是真人写|LLM 引用残渣|AI 抓取网页回答|AI 生成残留|模型默认不会' tests/after; then
+  echo "当前快照仍残留旧版规则或作者身份断言" >&2
+  exit 1
+fi
+
 rg -q "否定对举" tests/after/04-output.md || {
   echo "04-output.md 未覆盖 #48 否定对举" >&2
   exit 1
@@ -65,21 +72,21 @@ rg -q "两周" tests/after/04-output.md || {
   exit 1
 }
 
-rg -q "【门检】判断：真人文本（停手）" tests/after/05-output.md || {
+rg -q "【门检】改写必要性：低（停手）" tests/after/05-output.md || {
   echo "05-output.md 未在门检停手" >&2
   exit 1
 }
 
-# ---------- v0.6.5 block-specific assertions ----------
+# ---------- 06-12 block-specific assertions ----------
 
 # 06 — brand voice / negative activation
 if ! is_known_gap "06"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/06-output.md || {
-    echo "06-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/06-output.md || {
+    echo "06-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
-  if rg -q "真人文本（停手）" tests/after/06-output.md; then
-    echo "06-output.md 误判为真人文本停手（品牌广告应走 AI 判定）" >&2
+  if rg -q "改写必要性：低（停手）" tests/after/06-output.md; then
+    echo "06-output.md 误判为低必要性停手" >&2
     exit 1
   fi
   rg -q "(品牌广告|brand-voice)" tests/after/06-output.md || {
@@ -98,8 +105,12 @@ fi
 
 # 07 — academic/tech / 语体降级保护
 if ! is_known_gap "07"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/07-output.md || {
-    echo "07-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性：低（停手）" tests/after/07-output.md || {
+    echo "07-output.md 有白名单保护却未判为低必要性" >&2
+    exit 1
+  }
+  rg -q "无强命中" tests/after/07-output.md || {
+    echo "07-output.md 缺少无强命中结论" >&2
     exit 1
   }
   rg -q "(学术|科技)" tests/after/07-output.md || {
@@ -126,8 +137,8 @@ fi
 
 # 08 — weishendu consulting / #37-A
 if ! is_known_gap "08"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/08-output.md || {
-    echo "08-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/08-output.md || {
+    echo "08-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#37" tests/after/08-output.md || {
@@ -138,8 +149,8 @@ fi
 
 # 09 — XHS healing / #37-B
 if ! is_known_gap "09"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/09-output.md || {
-    echo "09-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/09-output.md || {
+    echo "09-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#37" tests/after/09-output.md || {
@@ -154,8 +165,8 @@ fi
 
 # 10 — B 站 AI 解说稿 / #50-B
 if ! is_known_gap "10"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/10-output.md || {
-    echo "10-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/10-output.md || {
+    echo "10-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#50" tests/after/10-output.md || {
@@ -166,8 +177,8 @@ fi
 
 # 11 — negation stacking / #48 density
 if ! is_known_gap "11"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/11-output.md || {
-    echo "11-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/11-output.md || {
+    echo "11-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#48" tests/after/11-output.md || {
@@ -180,10 +191,10 @@ if ! is_known_gap "11"; then
   }
 fi
 
-# 12 — table abuse / #45 first I-category
+# 12 — table abuse / #45 G-category structure
 if ! is_known_gap "12"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/12-output.md || {
-    echo "12-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/12-output.md || {
+    echo "12-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#45" tests/after/12-output.md || {
@@ -192,18 +203,22 @@ if ! is_known_gap "12"; then
   }
 fi
 
-# ---------- v0.6.6 block-specific assertions ----------
+# ---------- 13-17 block-specific assertions ----------
 
 # 13 — XHS classic templates + #47b template placeholders
 if ! is_known_gap "13"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/13-output.md || {
-    echo "13-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/13-output.md || {
+    echo "13-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#47b" tests/after/13-output.md || {
-    echo "13-output.md 未命中 #47b 占位符硬证据" >&2
+    echo "13-output.md 未记录 #47b 占位符工作流风险" >&2
     exit 1
   }
+  if rg -q "#47b.*硬证据|证明文本来自模板" tests/after/13-output.md; then
+    echo "13-output.md 仍把占位符误作作者身份硬证据" >&2
+    exit 1
+  fi
   rg -q "#37-B" tests/after/13-output.md || {
     echo "13-output.md 未命中 #37-B 小红书老套路复用" >&2
     exit 1
@@ -226,8 +241,8 @@ fi
 
 # 14 — XHS OOTD + 已入土流行语 "绝绝子 / 气场两米八"
 if ! is_known_gap "14"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/14-output.md || {
-    echo "14-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/14-output.md || {
+    echo "14-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#37-B" tests/after/14-output.md || {
@@ -251,8 +266,8 @@ fi
 
 # 15 — XHS 办公教程 / 技术信息保护
 if ! is_known_gap "15"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/15-output.md || {
-    echo "15-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/15-output.md || {
+    echo "15-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#37-B" tests/after/15-output.md || {
@@ -281,8 +296,8 @@ fi
 
 # 16 — XHS 护肤 / 成分白名单
 if ! is_known_gap "16"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/16-output.md || {
-    echo "16-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/16-output.md || {
+    echo "16-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#37-B" tests/after/16-output.md || {
@@ -315,8 +330,8 @@ fi
 
 # 17 — XHS 家居 / 毒性正能量缝合 + 俚语边界
 if ! is_known_gap "17"; then
-  rg -q "【门检】判断[:：]AI 生成文本" tests/after/17-output.md || {
-    echo "17-output.md 门检未判为 AI 生成文本" >&2
+  rg -q "【门检】改写必要性[:：](中|高)" tests/after/17-output.md || {
+    echo "17-output.md 门检未判为中或高改写必要性" >&2
     exit 1
   }
   rg -q "#49" tests/after/17-output.md || {

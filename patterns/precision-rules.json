@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "description": "Context gates used by the production pattern layer and executable precision contract.",
+  "documentation": [
+    {
+      "path": "patterns/banned-words.md",
+      "required_markers": [
+        "不做裸字符串定罪",
+        "假坦诚开场",
+        "格言公式 / 伪洞察枢纽",
+        "连续短句造戏剧感",
+        "标题后复述标题",
+        "变更叙事腔",
+        "助手续写尾巴",
+        "I/J 不并入 AI 味分"
+      ]
+    },
+    {
+      "path": "patterns/catalog/patterns.md",
+      "required_markers": [
+        "22b. 格言公式 / 伪洞察枢纽",
+        "23a. 标题后复述标题",
+        "23b. 变更叙事腔",
+        "26a. 助手续写尾巴",
+        "27a. 假坦诚开场",
+        "连续短句造戏剧感",
+        "不得拿来断言作者身份"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "workflow_placeholder",
+      "axis": "risk",
+      "kind": "regex",
+      "regex": "\\[(?:产品名|品牌|作者|负责人|项目名)\\]|\\{\\{[^}]+\\}\\}|(?<![A-Za-z])X{2,}(?![A-Za-z])|XXXX-XX-XX"
+    },
+    {
+      "id": "workflow_url",
+      "axis": "risk",
+      "kind": "regex",
+      "regex": "[?&](?:utm_[^=]+|referrer)="
+    },
+    {
+      "id": "format_markdown",
+      "axis": "risk",
+      "kind": "regex",
+      "contexts": ["plain_text"],
+      "regex": "(?:^|\\n)#{1,6} |\\*\\*.+?\\*\\*|`[^`]+`"
+    },
+    {
+      "id": "dash_overuse",
+      "axis": "pattern",
+      "kind": "regex_count",
+      "regex": "——",
+      "min_count": 2,
+      "required_regex": "也就是|换句话说|或者说",
+      "excluded_contexts": ["narrative", "brand_copy"]
+    },
+    {
+      "id": "english_audience_mismatch",
+      "axis": "pattern",
+      "kind": "term_count",
+      "contexts": ["public_general"],
+      "terms": ["check", "feature", "workflow", "deadline", "context", "state", "cache", "argument", "pipeline"],
+      "min_count": 3
+    },
+    {
+      "id": "generic_addressee",
+      "axis": "pattern",
+      "kind": "term_count",
+      "contexts": ["single_recipient"],
+      "terms": ["用户", "大家", "各位", "朋友们"],
+      "min_count": 3
+    },
+    {
+      "id": "mechanical_parallel",
+      "axis": "pattern",
+      "kind": "regex",
+      "regex": "首先[\\s\\S]+其次[\\s\\S]+最后",
+      "excluded_contexts": ["formal_enumeration"]
+    },
+    {
+      "id": "fake_candor",
+      "axis": "pattern",
+      "requires_adjacent_negative": true,
+      "kind": "regex",
+      "regex": "^(?:说实话|坦白讲|我本来不想说)",
+      "excluded_regex": "(?:去年|上周|我错|利益冲突|无法确认|没核实|记不清|不确定|代价|失败)"
+    },
+    {
+      "id": "pseudo_insight",
+      "axis": "pattern",
+      "requires_adjacent_negative": true,
+      "kind": "regex",
+      "regex": "归根结底[\\s\\S]*(?:真正的|不是[\\s\\S]+而是)",
+      "excluded_regex": "(?:因为|数据显示|具体来说|例如|证据是|原因是)"
+    },
+    {
+      "id": "dramatic_short_run",
+      "axis": "pattern",
+      "requires_adjacent_negative": true,
+      "kind": "short_sentence_run",
+      "max_chars": 5,
+      "min_count": 3,
+      "excluded_contexts": ["brand_copy"]
+    },
+    {
+      "id": "title_restatement",
+      "axis": "pattern",
+      "requires_adjacent_negative": true,
+      "kind": "title_restatement",
+      "excluded_contexts": ["news_lede", "academic_abstract", "legal_summary"]
+    },
+    {
+      "id": "change_narration",
+      "axis": "pattern",
+      "requires_adjacent_negative": true,
+      "kind": "regex",
+      "contexts": ["publishable_copy"],
+      "regex": "这次我把|下面[\\s\\S]+调整了|改完后|读起来会更"
+    },
+    {
+      "id": "assistant_tail",
+      "axis": "pattern",
+      "requires_adjacent_negative": true,
+      "kind": "regex",
+      "contexts": ["publishable_copy"],
+      "regex": "如果你愿意|需要的话我可以|我还可以再给你"
+    },
+    {
+      "id": "empty_business_jargon",
+      "axis": "pattern",
+      "kind": "term_count",
+      "contexts": ["vague_business"],
+      "terms": ["拆解", "接住", "落地", "闭环", "势能"],
+      "min_count": 3
+    }
+  ]
+}
