@@ -19,3 +19,9 @@ qu-ai-wei 本身受 [`humanizer`](https://github.com/blader/humanizer)(作者 Si
 ## 设计共识(未直接并入代码,仅借鉴做法)
 
 humanizer-skill(Aboudjem)· shuorenhua(说人话)· Humanizer-zh(op7418)· humanize-text · StealthHumanizer · humanizer-de。详见 `references/design-notes.md`。
+
+## 范文短引用(著作权法第 24 条适当引用)
+
+`patterns/exemplars.md` 含若干 ≤150 字的短摘录,**为说明写作风格、供学习借鉴**,依《中华人民共和国著作权法》第 24 条第(二)项「为介绍、评论某一作品或者说明某一问题,在作品中适当引用他人已经发表的作品」适当引用,均标注作者 / 出处 / URL,非转载、不构成对原作的市场替代。来源含:晚点 LatePost、数英 Digitaling、SocialBeta、品牌星球 BrandStar 等公开发表文章。如相关权利人不希望被引用,提 issue 即移除。
+
+人味写作规则蒸馏自:奥威尔《政治与英语》、阮一峰《中文技术文档写作规范》、叶圣陶 / 夏丏尊《文心》、sparanoid《中文文案排版指北》、晚点 LatePost 记者手记等(均注明出处)。

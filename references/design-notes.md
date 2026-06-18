@@ -57,6 +57,16 @@
 
 合并取「我的架构 ＋ 它的数据」:qu-ai-wei 的 references 并入 `patterns/catalog/` 作深查层(操作层 `banned-words.md` 拿不准时下钻),tests 并入 `tests/` 作回归集。署名与 MIT 许可保留(见 `CREDITS.md` 与 `patterns/catalog/LICENSE.qu-ai-wei`)。原 `qu-ai-wei` 已从活跃 skills 归档。
 
+## 0.5.0:实战回灌 ＋ 范文库 ＋ 个人禁忌层
+
+一次真实客户方案(周大生 Q3)实战后,把经验回灌进 skill:
+
+- **J 组江湖气 / 互联网黑话**升为独立模式组 —— 实战证明底子好的稿子真正要清的是挑大梁 / 主战场 / 卡 / 打通 / 赋能 / 闭环这类比喻腔,而非典型 AI 腔。
+- **个人禁忌层 `user-taste.md`** —— 用户的语言洁癖(点名禁词 ＋ 手动改稿习惯)成文,优先级高于通用词典。仲裁:事实 > 个人禁忌 > 渠道语体 > 通用。
+- **乙方腔 ≠ AI 味** —— 客户方案语体下,战略角色 / KFS / 节点日历是合规 deck 结构,不扣分;只去空话型乙方腔。
+- **范文库 `exemplars.md`** —— 不只禁,还给「人写的好文长什么样」:蒸馏的人味正面规则(奥威尔 / 阮一峰 / 叶圣陶 / 晚点记者手记)＋ ≤150 字短锚点(第 24 条适当引用)。研究(CAT-LLM)显示特征规则比放原文 few-shot 有效约 3 倍。
+- **写回前过目 checkpoint** ＋ **扫描防跨词假阳性** ＋ **机密内容不入公开库**(从实战拦截与客户机密保护中得到的硬规则)。
+
 ## 参考与致谢(同类项目)
 
 直接并入:**qu-ai-wei**(MIT,见 `CREDITS.md`)。设计共识借鉴:humanizer-skill(Aboudjem)· shuorenhua(说人话)· Humanizer-zh(op7418)· humanize-text · StealthHumanizer · humanizer-de。本项目取其阶段化、分级、保真、留人味的共识,针对中文专业交付场景重构,非照搬。

@@ -110,9 +110,11 @@ human-flavor-pipeline/
 ├── scripts/build-agents.sh     SKILL.md → AGENTS.md 同源生成脚本
 ├── CREDITS.md                  署名(含并入的 qu-ai-wei,MIT)
 ├── patterns/
-│   ├── banned-words.md         操作层:A–I 模式分组 ＋ 三级强度词典 ＋ 白名单
+│   ├── banned-words.md         操作层:A–J 模式分组(含 J 江湖气/黑话)＋ 三级强度 ＋ 白名单
+│   ├── user-taste.md           个人禁忌层(点名禁词 ＋ 手动改稿习惯,优先级最高)
+│   ├── exemplars.md            范文库:人味正面规则 ＋ 短范文锚点(署名引用)＋ 个人锚点
 │   ├── catalog/                深查层:51 条 verbatim 模式库 ＋ 白名单/标点/句法/平台/品牌声口(并自 qu-ai-wei)
-│   ├── channel-presets.md      渠道预设(飞书/Notion/公众号/小红书/学术)
+│   ├── channel-presets.md      渠道预设 ＋ 乙方腔好坏边界
 │   ├── voice-profiles.md       五种声口(句长＋用词＋结构捆绑)
 │   └── style-anchors.md        风格锚点(few-shot,贴你的真文)
 ├── references/
