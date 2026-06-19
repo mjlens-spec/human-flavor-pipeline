@@ -1,6 +1,8 @@
 {
   "schema": 1,
-  "description": "Context gates used by the production pattern layer and executable precision contract.",
+  "description": "确定性护栏契约(guardrail):供 precision/recall 测试加载,校验正则提示层调得准不准。绿 != skill 正确 —— 模型实际按散文层判断,模型级评测见 tests/golden/。",
+  "canonical_source": "对模型而言,patterns/banned-words.md 与 patterns/user-taste.md 的散文规则是唯一事实来源;本 JSON 是从散文派生的护栏镜像,新增规则须在散文层有对应条目。",
+  "calibration": {"profile": "通用主力 LLM(GPT-4/5 系、Claude 4 系)", "last_reviewed": "2026-06-18", "note": "AI 味词汇随模型迭代演化,floor 与词表需按当前主力模型定期复核"},
   "documentation": [
     {
       "path": "patterns/banned-words.md",
@@ -12,7 +14,10 @@
         "标题后复述标题",
         "变更叙事腔",
         "助手续写尾巴",
-        "I/J 不并入 AI 味分"
+        "I/J 不并入 AI 味分",
+        "检测下限(floor)",
+        "否定先行密度门控",
+        "词表校准"
       ]
     },
     {
@@ -135,6 +140,43 @@
       "contexts": ["vague_business"],
       "terms": ["拆解", "接住", "落地", "闭环", "势能"],
       "min_count": 3
+    },
+    {
+      "id": "cliche_opener",
+      "axis": "pattern",
+      "kind": "regex",
+      "regex": "随着[\\s\\S]{0,24}(?:不断|持续|快速)?(?:发展|深入|推进|到来)|在当今[\\s\\S]{0,12}(?:时代|背景|社会)|在[\\s\\S]{0,24}的大背景下",
+      "floor": true
+    },
+    {
+      "id": "summary_cliche",
+      "axis": "pattern",
+      "kind": "regex",
+      "regex": "综上所述|由此可见|总而言之",
+      "floor": true
+    },
+    {
+      "id": "empty_emphasis",
+      "axis": "pattern",
+      "kind": "regex",
+      "regex": "值得注意的是|毋庸置疑|不言而喻|众所周知",
+      "floor": true
+    },
+    {
+      "id": "pr_empowerment",
+      "axis": "pattern",
+      "kind": "regex",
+      "regex": "赋能|抓手|护航",
+      "floor": true
+    },
+    {
+      "id": "negation_first_cluster",
+      "axis": "pattern",
+      "requires_adjacent_negative": true,
+      "kind": "regex_count",
+      "regex": "不(?:是|需要)[\\s\\S]{1,20}?(?:而是|而要|要的是)",
+      "min_count": 2,
+      "excluded_contexts": ["brand_copy"]
     }
   ]
 }

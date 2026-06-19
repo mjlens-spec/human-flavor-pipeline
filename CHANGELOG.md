@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.0 - 2026-06-20
+
+对抗 0.6 精度偏置的反向加固:补召回护栏、否定先行松绑、单一真相源、模型级评测、外部锚。
+
+- 新增**检测下限 floor**(`precision-rules.json` 4 条无例外规则:开场烘托 / 收尾套话 / 空强调 / PR 黑话)＋ **召回测试** `tests/fixtures/19-recall-floor.jsonl`;护栏从「只防误报」变「精度 + 召回」双向(check-precision.py 加载 18+19,36 用例:20 防误报 + 16 正样本)
+- **否定先行硬禁 → 密度门控**:`不是X而是Y` 单次放行,同段 ≥2 次才罚(`negation_first_cluster`),`user-taste.md` 同步松绑
+- **单一真相源**:散文层对模型 canonical,`precision-rules.json` 加 `canonical_source` ＋ `calibration` 字段;SKILL/banned-words 标明
+- **护栏正名 ＋ 模型级评测**:`check-precision.py` 改述为 guardrail(绿≠skill 正确);新增 `tests/golden/`(before→after ＋ 五维 rubric)
+- **外部权威锚**:Wikipedia「Signs of AI Writing」背书模式组;self-audit 终极一问借自 best-humanizer-handbook
+- **声口必走**:有个人锚点时「写出自己的文风」从可选升为必走
+- **词表校准**字段(应对模型迭代新味)＋ **`SKILL-lite.md`** 单文件变体(ChatGPT / Gemini 等)
+- 调研:GitHub(best-humanizer-handbook 等)、小红书(头条去味工作流)
+
 ## 0.6.0 - 2026-06-18
 
 精确率优先的规则校准,重点降低合法中文、专业文体与工作流残留的误报。

@@ -1,14 +1,17 @@
 # human-flavor-pipeline
 
-![version](https://img.shields.io/badge/version-0.6.0-blue.svg)
+![version](https://img.shields.io/badge/version-0.7.0-blue.svg)
 
-当前版本:v0.6.0
+当前版本:v0.7.0
 
 一条**中文「去 AI 味」集大成流水线**,**Claude Code 与 Codex 双入口**。它只判断文本是否需要改,不根据文风猜作者身份;改写时守住事实、语体与作者原有声口。
 
 - **Claude Code** 走 `SKILL.md`(技能格式,支持渐进式加载)
 - **Codex** 走根目录 `AGENTS.md`(由 `SKILL.md` 同源生成,避免漂移)
+- **只吃单 system prompt 的工具**(ChatGPT / Gemini 等)走 `SKILL-lite.md`
 - `patterns/` 与 `references/` 数据层两个工具共享
+
+> v0.7 要点:精度 + 召回双向护栏(检测下限 floor 防止「什么都不敢改」、`tests/fixtures/19-recall-floor.jsonl` 守召回)、否定先行从硬禁改密度门控、单一真相源(散文 canonical)、模型级评测 `tests/golden/`、Wikipedia「Signs of AI Writing」外部锚、有锚点时声口必走。
 
 它吸收了 humanizer 类(voice profiles、质量评分矩阵、节奏校准、保真闸)与 qu-ai-wei 类(改写必要性门检、语体阶梯、毛边、整篇五问、空句检测、模式分组)两条线的精华。上游版本记录见 [`UPSTREAM.lock`](UPSTREAM.lock)。
 
@@ -110,6 +113,7 @@ ln -s ~/.humanizer/AGENTS.md ~/.codex/AGENTS.md   # 或按需 include
 human-flavor-pipeline/
 ├── SKILL.md                    Claude Code 入口 ＋ 唯一事实来源(六阶段主流程)
 ├── AGENTS.md                   Codex 入口(由 SKILL.md 经 scripts/build-agents.sh 生成)
+├── SKILL-lite.md               单文件变体(ChatGPT / Gemini 等只吃 system prompt 的工具)
 ├── scripts/build-agents.sh     SKILL.md → AGENTS.md 同源生成脚本
 ├── CREDITS.md                  署名(含并入的 qu-ai-wei,MIT)
 ├── patterns/
@@ -126,7 +130,7 @@ human-flavor-pipeline/
 │   ├── self-audit.md           改写必要性门检 ＋ 原有人味 ＋ 五问 ＋ 独立复核
 │   ├── examples.md             实战样例(改前/改后 ＋ 打磨报告)
 │   └── design-notes.md         集大成清单与同类项目致谢
-└── tests/                      17 组快照 ＋ 29 条 precision 契约 ＋ 自动检查
+└── tests/                      快照 ＋ 29 条 precision 契约 ＋ 召回 floor(19)＋ golden 模型级评测 ＋ 自动检查
 ```
 
 ## 用之前建议做一件事

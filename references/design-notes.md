@@ -48,6 +48,20 @@
 6. **有界迭代** —— 强度档位 ＋ 最多 N 遍回改,取代无限催降。
 7. **载体 / 受众 / 文体 / 声口拆分** —— 载体只管格式,其余三项共同决定语言与节奏。
 
+## 0.7.0:召回护栏与外部锚(对抗 0.6 的精度偏置)
+
+0.6 精确率优先做得到位,但暴露一个结构性偏置:测试只惩罚误报、不奖励召回,长期会把 skill 调成「什么都不敢改」;且把「否定先行」一刀切硬禁,是好洞察的过度泛化。0.7 做反向加固:
+
+- **检测下限(floor)＋ 召回测试** —— `precision-rules.json` 新增 4 条无例外 floor 规则(开场烘托 / 收尾套话 / 空强调 / PR 黑话),`tests/fixtures/19-recall-floor.jsonl` 用 `pos_*` 用例守住「真 slop 必被抓」。护栏测试从「只测不误报」变成「精度 + 召回」双向。
+- **否定先行:硬禁 → 密度门控** —— `不是 X 而是 Y` 单次放行(合法对比),同段 ≥2 次才判套路(`negation_first_cluster`),套用 0.6 自己给 fake_candor 的克制思路。
+- **单一真相源** —— 明确散文层(`banned-words.md` ＋ `user-taste.md`)对模型 canonical,`precision-rules.json` 是派生护栏契约;新增 `canonical_source` 字段。
+- **护栏 ≠ 正确,补模型级评测** —— `check-precision.py` 正名为 guardrail;新增 `tests/golden/`(before→after ＋ 五维 rubric,人 / LLM-judge 评),专测模型行为。
+- **外部权威锚** —— A–H 模式组与 floor 以 Wikipedia「Signs of AI Writing」背书;self-audit 终极一问「像不像有人有真实理由要写它」借自 best-humanizer-handbook。
+- **声口必走** —— 有个人锚点时「写出自己的文风」从可选升为必走(小红书头条工作流的差异点)。
+- **词表校准 ＋ Lite 变体** —— 词表标「最后校准模型 / 日期」应对模型迭代的新味;新增 `SKILL-lite.md` 给只吃单 system prompt 的工具(ChatGPT / Gemini)。
+
+调研来源:GitHub(best-humanizer-handbook、anti-slop-writing、peakoss/anti-slop)、小红书(头条工作流「先看出 AI 味 → 改成人话 → 写出自己的文风」)。
+
 ## 0.6.0:精确率与证据边界
 
 本版把表达模式、个人偏好、事实风险与格式风险拆开,并用可执行 precision 契约防止裸关键词误杀。契约直接加载 `patterns/precision-rules.json` 的 production 阈值、上下文与例外,同时校验操作层与深查层文档锚点。上游版本与本地差异见 `UPSTREAM.lock`。

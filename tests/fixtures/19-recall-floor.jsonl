@@ -1,0 +1,7 @@
+{"id":"pos_cliche_opener","context":"generic_article","text":"随着行业快速发展,这个品类的需求明显上升。","expected_patterns":["cliche_opener"],"expected_risks":[]}
+{"id":"pos_summary_cliche","context":"generic_article","text":"综上所述,本次活动达到了预期目标。","expected_patterns":["summary_cliche"],"expected_risks":[]}
+{"id":"pos_empty_emphasis","context":"generic_article","text":"值得注意的是,这个数字这半年还在上升。","expected_patterns":["empty_emphasis"],"expected_risks":[]}
+{"id":"pos_pr_empowerment","context":"generic_article","text":"我们要用内容赋能品牌,再找到一个新的抓手。","expected_patterns":["pr_empowerment"],"expected_risks":[]}
+{"id":"pos_negation_cluster","context":"generic_article","text":"做内容不是堆数量,而是找对人;投放不是撒网,而是卡人群。","expected_patterns":["negation_first_cluster"],"expected_risks":[]}
+{"id":"neg_negation_single","context":"generic_article","text":"这套方案的重点不是规模,而是把获客成本压下来。","expected_patterns":[],"expected_risks":[],"guards":["negation_first_cluster"]}
+{"id":"neg_clean_floor","context":"generic_article","text":"这个品类上半年收入降了两成,价格没动,主因是舆论变化。","expected_patterns":[],"expected_risks":[]}

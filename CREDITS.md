@@ -25,3 +25,10 @@ humanizer-skill(Aboudjem)· shuorenhua(说人话)· Humanizer-zh(op7418)· human
 `patterns/exemplars.md` 的范文锚点均为**原创、脱敏的示范例**,只演示写作手法,**不含真实品牌 / 公司案例名,不引用第三方原文**,故无需第三方署名,也不附外部出处。
 
 人味写作规则蒸馏自公开写作方法论:奥威尔《政治与英语》、阮一峰《中文技术文档写作规范》、叶圣陶 / 夏丏尊《文心》、sparanoid《中文文案排版指北》等(均为写作方法论,非品牌案例)。
+
+## 外部权威锚(0.7 起引为规则背书)
+
+为减少「自造清单」的争议,A–H 模式组与检测下限以公开权威来源背书:
+
+- [Wikipedia:Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) —— AI 写作痕迹的权威分类,公开可引,作为模式组的外部锚。
+- best-humanizer-handbook(Vivian Wen,2026,赞助方 Lynote.ai)—— 方法论主张「humanization 不是换词,是更好的写作 + 保护事实 / 引用 / 数据」,与本项目理念一致;`references/self-audit.md` 的终极一问「这稿像不像有人有真实理由要写它」出处于此。仅借鉴理念,未并入其文本。

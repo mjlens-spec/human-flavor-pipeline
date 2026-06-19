@@ -110,7 +110,7 @@
 ### 3 · 注入人味
 去味之后要防「换成另一种机器腔」。三个动作:
 - **节奏** —— 朗读检查连续句是否机械等长。只在均质化确实存在时调整,不规定固定字数,不把文章改成连续短句或人造金句。
-- **风格锚点 ＋ 声口** —— 若 `patterns/style-anchors.md` 有用户真文样本,用它做 few-shot 对齐用户声口;否则按选定 voice profile。
+- **风格锚点 ＋ 声口(有锚点必走)** —— `patterns/style-anchors.md` 或 `patterns/exemplars.md` 个人锚点里有用户真文时,**必须**用它做 few-shot 对齐用户声口。这是「写出自己的文风」、区别于通用人味的关键一步(社区共识里也是去 AI 味的差异点)。没有锚点才退回选定 voice profile,并在报告里提示「补个人锚点可显著提升声口贴合度」。
 - **留毛边** —— 原文有具体判断或感受就保留;没有就报告缺口,不能编,也不把「至少一处」设成硬指标。
 
 ### 4 · 校验(事实优先,两遍读)
@@ -156,7 +156,7 @@
 数据层与参考:
 - 操作层:`patterns/banned-words.md`(A–H 表达模式 ＋ I 风险 ＋ J 风格)· `patterns/user-taste.md`(个人禁忌,最高优先)· `patterns/channel-presets.md`(载体 / 受众 / 文体拆分,含乙方腔边界)· `patterns/voice-profiles.md` · `patterns/style-anchors.md`
 - 范文库:`patterns/exemplars.md`(人味正面规则 ＋ 短范文锚点 ＋ 个人锚点)
-- production 契约:`patterns/precision-rules.json`(阈值、上下文与例外;测试直接加载)
+- 真相源(对模型 canonical):`patterns/banned-words.md` ＋ `patterns/user-taste.md`(散文)。`patterns/precision-rules.json` 是从散文派生的**护栏契约**(阈值 / 上下文 / 例外),测试直接加载,新增规则须在散文层有对应条目;护栏测试绿 ≠ skill 正确(模型按散文判断,模型级评测见 `tests/golden/`)。
 - 深查层(并自 qu-ai-wei,见 `CREDITS.md`):`patterns/catalog/`(51 个主编号及本地扩展、白名单、标点 / 句法、平台 / 品牌声口)
 - 参考:`references/scoring.md` · `references/self-audit.md` · `references/examples.md` · `references/design-notes.md`
 - 回归测试集:`tests/`(17 组 fixtures ＋ baseline / after 快照)

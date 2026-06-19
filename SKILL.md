@@ -1,6 +1,6 @@
 ---
 name: human-flavor-pipeline
-version: 0.6.0
+version: 0.7.0
 description: 中文「去 AI 味」集大成流水线 —— 把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实、语体与作者原有声口。两种模式:detect(只读体检,出 AI 味分 0–100 ＋ 人味质量分 0–50 ＋ 个人偏好命中 ＋ 风险项,不改字)和 full(全六段改写 ＋ 评分 diff 报告)。当用户说「去 AI 味」「改得说人话」「humanize 中文」「降 AI 味 / 降 AI 率」「这段太 AI 了」「润色成人写的」「帮我把这稿去味」,或粘贴一段明显 AI 腔文本要求改写时使用。吸收 humanizer 类(voice profiles、质量评分矩阵、节奏校准、保真闸)与 qu-ai-wei 类(改写必要性门检、语体阶梯、毛边、整篇五问自检、空句检测)精华。按 A–H 表达模式、I 风险、J 风格偏好诊断,并按载体、受众、文体与声口四个维度切换规则。只处理简体中文;只改已有文本,不从零生成;不处理英文正文。
 ---
 
@@ -109,7 +109,7 @@ description: 中文「去 AI 味」集大成流水线 —— 把任意草稿(AI 
 ### 3 · 注入人味
 去味之后要防「换成另一种机器腔」。三个动作:
 - **节奏** —— 朗读检查连续句是否机械等长。只在均质化确实存在时调整,不规定固定字数,不把文章改成连续短句或人造金句。
-- **风格锚点 ＋ 声口** —— 若 `patterns/style-anchors.md` 有用户真文样本,用它做 few-shot 对齐用户声口;否则按选定 voice profile。
+- **风格锚点 ＋ 声口(有锚点必走)** —— `patterns/style-anchors.md` 或 `patterns/exemplars.md` 个人锚点里有用户真文时,**必须**用它做 few-shot 对齐用户声口。这是「写出自己的文风」、区别于通用人味的关键一步(社区共识里也是去 AI 味的差异点)。没有锚点才退回选定 voice profile,并在报告里提示「补个人锚点可显著提升声口贴合度」。
 - **留毛边** —— 原文有具体判断或感受就保留;没有就报告缺口,不能编,也不把「至少一处」设成硬指标。
 
 ### 4 · 校验(事实优先,两遍读)
@@ -155,7 +155,7 @@ description: 中文「去 AI 味」集大成流水线 —— 把任意草稿(AI 
 数据层与参考:
 - 操作层:`patterns/banned-words.md`(A–H 表达模式 ＋ I 风险 ＋ J 风格)· `patterns/user-taste.md`(个人禁忌,最高优先)· `patterns/channel-presets.md`(载体 / 受众 / 文体拆分,含乙方腔边界)· `patterns/voice-profiles.md` · `patterns/style-anchors.md`
 - 范文库:`patterns/exemplars.md`(人味正面规则 ＋ 短范文锚点 ＋ 个人锚点)
-- production 契约:`patterns/precision-rules.json`(阈值、上下文与例外;测试直接加载)
+- 真相源(对模型 canonical):`patterns/banned-words.md` ＋ `patterns/user-taste.md`(散文)。`patterns/precision-rules.json` 是从散文派生的**护栏契约**(阈值 / 上下文 / 例外),测试直接加载,新增规则须在散文层有对应条目;护栏测试绿 ≠ skill 正确(模型按散文判断,模型级评测见 `tests/golden/`)。
 - 深查层(并自 qu-ai-wei,见 `CREDITS.md`):`patterns/catalog/`(51 个主编号及本地扩展、白名单、标点 / 句法、平台 / 品牌声口)
 - 参考:`references/scoring.md` · `references/self-audit.md` · `references/examples.md` · `references/design-notes.md`
 - 回归测试集:`tests/`(17 组 fixtures ＋ baseline / after 快照)

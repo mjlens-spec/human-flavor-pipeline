@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Executable precision contract backed by production pattern data."""
+"""Executable guardrail contract (precision + recall floor) for the deterministic hint layer.
+
+Green here means the regex/term hints are well-tuned: few false positives, and the
+detection floor still fires on unambiguous slop. It does NOT prove the model rewrites
+correctly -- the skill is model-applied judgement over the prose layer
+(patterns/banned-words.md, patterns/user-taste.md). For model-level review see tests/golden/.
+"""
 
 from __future__ import annotations
 
@@ -11,7 +17,10 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CASES = ROOT / "tests" / "fixtures" / "18-precision-cases.jsonl"
+CASE_FILES = [
+    ROOT / "tests" / "fixtures" / "18-precision-cases.jsonl",
+    ROOT / "tests" / "fixtures" / "19-recall-floor.jsonl",
+]
 RULES = ROOT / "patterns" / "precision-rules.json"
 
 
@@ -123,7 +132,8 @@ def main() -> int:
     failures = validate_production_docs(config) + validate_rule_registry(rules)
     cases = [
         json.loads(line)
-        for line in CASES.read_text(encoding="utf-8").splitlines()
+        for path in CASE_FILES
+        for line in path.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
     for case in cases:
