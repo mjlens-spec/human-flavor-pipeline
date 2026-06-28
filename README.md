@@ -50,7 +50,7 @@
 
 ## 多轴诊断
 
-AI 味与人味双评分负责表达质量;个人偏好、事实 / 来源风险、格式 / 载体风险另列,不混入 AI 味。AI 味是编辑启发式,不回答「谁写的」。详见 [`references/scoring.md`](references/scoring.md)。
+AI 味与人味双评分负责表达质量;个人偏好、事实 / 来源风险、改写新增信息、格式 / 载体风险另列,不混入 AI 味。AI 味是编辑启发式,不回答「谁写的」。详见 [`references/scoring.md`](references/scoring.md)。
 
 ## 强度档位
 
@@ -121,18 +121,18 @@ human-flavor-pipeline/
 ├── patterns/
 │   ├── banned-words.md         操作层:A–H 表达模式 ＋ I 风险 ＋ J 风格偏好
 │   ├── user-taste.md           个人禁忌层(点名禁词 ＋ 手动改稿习惯,优先级最高)
-│   ├── exemplars.md            范文库:人味正面规则 ＋ 原创脱敏短锚点 ＋ 个人锚点
+│   ├── exemplars.md            范文库:人味正面规则 ＋ 原创脱敏短锚点 ＋ 个人锚点(含脱敏声口示范)
 │   ├── precision-rules.json    production 阈值 / 上下文 / 例外(供 precision 契约加载)
-│   ├── catalog/                深查层:51 个主编号 ＋ 本地扩展/白名单/标点/句法/平台/品牌声口
+│   ├── catalog/                深查层:51 个主编号 ＋ 本地扩展/白名单(含营销圈内词)/标点/句法/平台/品牌声口
 │   ├── channel-presets.md      载体/受众/文体/声口拆分 ＋ 乙方腔边界
-│   ├── voice-profiles.md       六种声口(节奏＋用词＋结构捆绑)
-│   └── style-anchors.md        风格锚点(few-shot,贴你的真文)
+│   ├── voice-profiles.md       六种声口(节奏＋用词＋结构捆绑,含口播下的达人/博主脚本亚型)
+│   └── style-anchors.md        风格锚点(few-shot,贴你的真文;含已提炼声口参数表作 fallback)
 ├── references/
 │   ├── scoring.md              多轴诊断:双评分 ＋ 偏好 ＋ 风险
 │   ├── self-audit.md           改写必要性门检 ＋ 原有人味 ＋ 五问 ＋ 独立复核
 │   ├── examples.md             实战样例(改前/改后 ＋ 打磨报告)
 │   └── design-notes.md         集大成清单与同类项目致谢
-└── tests/                      快照 ＋ 29 条 precision 契约 ＋ 召回 floor(19)＋ golden 模型级评测(含口播)＋ 自动检查
+└── tests/                      快照 ＋ 29 条 precision 契约 ＋ 召回 floor(19)＋ golden 模型级评测(含口播 / 达人脚本 / 新增信息标记)＋ 自动检查
 ```
 
 ## 用之前建议做一件事
