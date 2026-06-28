@@ -1,8 +1,8 @@
 # human-flavor-pipeline
 
-![version](https://img.shields.io/badge/version-0.7.1-blue.svg)
+![version](https://img.shields.io/badge/version-0.8.0-blue.svg)
 
-当前版本:v0.7.1
+当前版本:v0.8.0
 
 一条**中文「去 AI 味」集大成流水线**,**Claude Code 与 Codex 双入口**。它只判断文本是否需要改,不根据文风猜作者身份;改写时守住事实、语体与作者原有声口。
 
@@ -13,6 +13,7 @@
 
 > v0.7 要点:精度 + 召回双向护栏(检测下限 floor 防止「什么都不敢改」、`tests/fixtures/19-recall-floor.jsonl` 守召回)、否定先行从硬禁改密度门控、单一真相源(散文 canonical)、模型级评测 `tests/golden/`、Wikipedia「Signs of AI Writing」外部锚、有锚点时声口必走。
 > v0.7.1 要点:补入口播 / 播客逐字稿声口,把可朗读的软垫词、反问、口头转场与自我修正从无信息填充里区分出来;同时保留事实闸,不为口播感编造亲历、数字、口头禅或固定收尾。
+> v0.8.0 要点:内外部调研集大成落地 —— 从真实写作语料提炼声口画像填进锚点(脱敏进 repo、真稿留本地),补营销 / 媒介圈内词白名单,否定先行个人层松绑为策略分野例外,新增【新增信息】标记防静默植入数据,加达人 / 博主脚本声口,翻译腔操作层上提。
 
 它吸收了 humanizer 类(voice profiles、质量评分矩阵、节奏校准、保真闸)与 qu-ai-wei 类(改写必要性门检、语体阶梯、毛边、整篇五问、空句检测、模式分组)两条线的精华。上游版本记录见 [`UPSTREAM.lock`](UPSTREAM.lock)。
 
