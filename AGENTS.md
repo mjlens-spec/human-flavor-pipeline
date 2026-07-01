@@ -161,6 +161,7 @@
 - 真相源(对模型 canonical):`patterns/banned-words.md` ＋ `patterns/user-taste.md`(散文)。`patterns/precision-rules.json` 是从散文派生的**护栏契约**(阈值 / 上下文 / 例外),测试直接加载,新增规则须在散文层有对应条目;护栏测试绿 ≠ skill 正确(模型按散文判断,模型级评测见 `tests/golden/`)。
 - 深查层(并自 qu-ai-wei,见 `CREDITS.md`):`patterns/catalog/`(51 个主编号及本地扩展、白名单、标点 / 句法、平台 / 品牌声口)
 - 参考:`references/scoring.md` · `references/self-audit.md` · `references/examples.md` · `references/design-notes.md`
+- 项目语料库(选读,营销代理 / 头条易语境写作时查阅):`corpus/`(公司通案 · 跨行业方法论 · 华东项目案例 · 措辞词汇表,均已脱敏并经用户人工审核公开),不默认全量加载,按需下钻
 - 回归测试集:`tests/`(17 组 fixtures ＋ baseline / after 快照)
 
 **何时翻深查层**:阶段 1 诊断或阶段 2 剥离中,某条模式拿不准是否触发、需要原文 / 改后对照或语体限定时,查 `patterns/catalog/patterns.md` 对应编号。

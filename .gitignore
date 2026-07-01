@@ -5,3 +5,6 @@
 node_modules/
 __pycache__/
 *.tmp
+
+# 本地私有语料(用户人工审核后判定敏感、暂不公开的部分) —— 不进公开仓库
+/corpus-private/

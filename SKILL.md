@@ -1,6 +1,6 @@
 ---
 name: human-flavor-pipeline
-version: 0.8.5
+version: 0.9.0
 description: 中文「去 AI 味」集大成流水线 —— 把任意草稿(AI 生成、AI 辅助或可疑文本)改成读起来像人认真写的终稿,同时守住事实、语体与作者原有声口。两种模式:detect(只读体检,出 AI 味分 0–100 ＋ 人味质量分 0–50 ＋ 个人偏好命中 ＋ 风险项,不改字)和 full(全六段改写 ＋ 评分 diff 报告)。当用户说「去 AI 味」「改得说人话」「humanize 中文」「降 AI 味 / 降 AI 率」「这段太 AI 了」「润色成人写的」「帮我把这稿去味」,或粘贴一段明显 AI 腔文本要求改写时使用。吸收 humanizer 类(voice profiles、质量评分矩阵、节奏校准、保真闸)与 qu-ai-wei 类(改写必要性门检、语体阶梯、毛边、整篇五问自检、空句检测)精华。按 A–H 表达模式、I 风险、J 风格偏好诊断,并按载体、受众、文体与声口四个维度切换规则;口播 / 播客逐字稿可走专门的口播声口。只处理简体中文;只改已有文本,不从零生成;不处理英文正文。
 ---
 
@@ -160,6 +160,7 @@ description: 中文「去 AI 味」集大成流水线 —— 把任意草稿(AI 
 - 真相源(对模型 canonical):`patterns/banned-words.md` ＋ `patterns/user-taste.md`(散文)。`patterns/precision-rules.json` 是从散文派生的**护栏契约**(阈值 / 上下文 / 例外),测试直接加载,新增规则须在散文层有对应条目;护栏测试绿 ≠ skill 正确(模型按散文判断,模型级评测见 `tests/golden/`)。
 - 深查层(并自 qu-ai-wei,见 `CREDITS.md`):`patterns/catalog/`(51 个主编号及本地扩展、白名单、标点 / 句法、平台 / 品牌声口)
 - 参考:`references/scoring.md` · `references/self-audit.md` · `references/examples.md` · `references/design-notes.md`
+- 项目语料库(选读,营销代理 / 头条易语境写作时查阅):`corpus/`(公司通案 · 跨行业方法论 · 华东项目案例 · 措辞词汇表,均已脱敏并经用户人工审核公开),不默认全量加载,按需下钻
 - 回归测试集:`tests/`(17 组 fixtures ＋ baseline / after 快照)
 
 **何时翻深查层**:阶段 1 诊断或阶段 2 剥离中,某条模式拿不准是否触发、需要原文 / 改后对照或语体限定时,查 `patterns/catalog/patterns.md` 对应编号。
