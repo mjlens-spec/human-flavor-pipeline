@@ -11,15 +11,21 @@
 - **只吃单 system prompt 的工具**(ChatGPT / Gemini 等)走 `SKILL-lite.md`
 - `patterns/` 与 `references/` 数据层两个工具共享
 
-> v0.7 要点:精度 + 召回双向护栏(检测下限 floor 防止「什么都不敢改」、`tests/fixtures/19-recall-floor.jsonl` 守召回)、否定先行从硬禁改密度门控、单一真相源(散文 canonical)、模型级评测 `tests/golden/`、Wikipedia「Signs of AI Writing」外部锚、有锚点时声口必走。
-> v0.7.1 要点:补入口播 / 播客逐字稿声口,把可朗读的软垫词、反问、口头转场与自我修正从无信息填充里区分出来;同时保留事实闸,不为口播感编造亲历、数字、口头禅或固定收尾。
-> v0.8.0 要点:内外部调研集大成落地 —— 从真实写作语料提炼声口画像填进锚点(脱敏进 repo、真稿留本地),补营销 / 媒介圈内词白名单,否定先行个人层松绑为策略分野例外,新增【新增信息】标记防静默植入数据,加达人 / 博主脚本声口,翻译腔操作层上提。
-> v0.8.5 要点:达人业务语料回灌 —— 白名单补达人业务管理类黑话(筛选漏斗 / 金字塔分层 / 人群资产分级),表格自证套路与多层结构叠加两条新判据,口播补「材料引入式冷开场」与「系列回扣不硬编期号」两条反面模式,达人脚本落成六段式可执行骨架。
-> v0.9.0 要点:新增 `corpus/` 项目语料库 —— 首次系统性提炼营销代理公司(头条易)知识库语料(公司通案 / 跨行业方法论 / 华东项目案例 81 条 / 措辞词汇表),脱敏流程含多路独立 agent 通读复核与用户本人逐字终审,详见 `corpus/README.md`。
-
 它吸收了 humanizer 类(voice profiles、质量评分矩阵、节奏校准、保真闸)与 qu-ai-wei 类(改写必要性门检、语体阶梯、毛边、整篇五问、空句检测、模式分组)两条线的精华。上游版本记录见 [`UPSTREAM.lock`](UPSTREAM.lock)。
 
-它是 polish / transform 管线,不是生成器 —— 只改已有文本,不替你产生观察、采访与判断。
+它是 polish / transform 管线,不是生成器。只改已有文本,不替你产生观察、采访与判断。
+
+---
+
+## 版本亮点(最新在前)
+
+- **v0.9.0**:新增 `corpus/` 项目语料库。首次系统性提炼头条易公司知识库,涵盖公司通案、跨行业方法论、华东项目案例(81 条)与措辞词汇表。脱敏经多路 agent 通读复核,最后由用户本人逐字终审公开,详见 [`corpus/README.md`](corpus/README.md)。
+- **v0.8.5**:白名单补达人业务黑话,如筛选漏斗、金字塔分层、人群资产分级。新增两条判据:表格自证套路、多层结构叠加。口播补两条反面模式:材料引入式冷开场、系列回扣不硬编期号。达人脚本落成六段式可执行骨架。
+- **v0.8.0**:从真实写作语料提炼声口画像填进锚点,脱敏进 repo,真稿留本地。补营销 / 媒介圈内词白名单。否定先行个人层松绑为策略分野例外。新增【新增信息】标记,改写补进原文没有的数字或事实一律先标待核实,不静默植入。达人 / 博主脚本声口成型,翻译腔诊断规则上提到操作层。
+- **v0.7.1**:补入口播 / 播客逐字稿声口。可朗读的软垫词、反问、口头转场与自我修正,从无信息填充里单独区分出来,不再一刀切当废话删。事实闸同步收紧:不为了显得像口播就编造亲历、数字、口头禅或固定收尾。
+- **v0.7.0**:精度与召回双向护栏定型。检测下限 floor 防止「什么都不敢改」,配套召回测试守住底线。否定先行从一刀切硬禁改成密度门控。定下单一真相源(散文 canonical),补齐模型级评测 `tests/golden/`,外部锚定 Wikipedia 的「Signs of AI Writing」。有个人声口锚点时,声口对齐从可选升级为必走项。
+
+完整变更历史见 [`CHANGELOG.md`](CHANGELOG.md)。
 
 > 设计目标不是骗过 AI 检测器(那是脆弱的军备竞赛),而是让你自己的 AI 辅助稿子**确实读起来像人写的**。检测分下降是结果,不是目的。
 
@@ -46,9 +52,9 @@
 
 ## 两种模式 ＋ 场景门
 
-- **detect** —— 只跑阶段 0–1,出改写必要性、`AI 味分 0–100`、`人味质量分 0–50`、个人偏好与风险项,**一个字都不改**。
-- **full** —— 跑完整六段,出终稿 ＋ 打磨报告。
-- **场景门** —— 快速 / 聊天场景默认轻档直改、报告压一行;正式交付(提案 / 特稿)默认先体检再改。
+- **detect**:只跑阶段 0–1,出改写必要性、`AI 味分 0–100`、`人味质量分 0–50`、个人偏好与风险项,**一个字都不改**。
+- **full**:跑完整六段,出终稿 ＋ 打磨报告。
+- **场景门**:快速 / 聊天场景默认轻档直改、报告压一行;正式交付(提案 / 特稿)默认先体检再改。
 
 ## 多轴诊断
 
@@ -146,9 +152,9 @@ human-flavor-pipeline/
 
 ## English summary
 
-A six-stage Chinese-language editing pipeline for reducing formulaic AI-like prose. It evaluates rewrite necessity rather than claiming authorship, separates expression scores from preference and workflow risks, and preserves facts, register, and the author's existing voice.
+A six-stage pipeline for Chinese text, built to edit AI-flavored drafts until they read like something a person actually wrote. It judges whether a rewrite is needed before touching anything, rather than guessing who wrote it. Expression scores stay separate from preference and workflow risk, so a personal quirk or a formatting mismatch never gets mistaken for AI residue. Facts, register, and the author's existing voice don't move.
 
-It rewrites existing drafts while preserving facts and any concrete judgment already present. It never fabricates a personal detail or attitude to satisfy a style test. The goal is **not** to beat AI detectors.
+It edits what's already on the page. It won't invent a personal detail or an opinion just to pass a style check, and beating AI detectors was never the goal.
 
 Stages: **0** gate / lock facts / separate carrier, audience, register, and voice → **1** read-only multi-axis diagnosis → **2** edit structure and wording → **3** calibrate rhythm without fixed sentence lengths → **4** verify facts first → **5** diff report. Chinese (Simplified) only.
 
@@ -160,4 +166,4 @@ See [`references/design-notes.md`](references/design-notes.md) for the full synt
 
 ## License
 
-本项目 MIT — see [LICENSE](LICENSE)。并入的 qu-ai-wei 内容保留其原始 MIT 许可于 `patterns/catalog/LICENSE.qu-ai-wei`。
+本项目采用 MIT 许可,见 [LICENSE](LICENSE)。并入的 qu-ai-wei 内容保留其原始 MIT 许可于 `patterns/catalog/LICENSE.qu-ai-wei`。
