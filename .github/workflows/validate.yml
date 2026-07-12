@@ -17,6 +17,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install --yes ripgrep
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
