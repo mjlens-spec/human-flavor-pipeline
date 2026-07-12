@@ -12,5 +12,7 @@
   - `bash tests/check-version-sync.sh`
   - `bash tests/check-snapshot-smoke.sh`
   - `python3 tests/check-precision.py`
-  - `python3 tests/check-fact-integrity.py --self-test`
+  - `python3 tests/check-fact-integrity.py --fixtures`
+  - `python3 tests/golden/run_eval.py validate`
+  - `python3 -m unittest tests/golden/test_run_eval.py`
   - `bash tests/check-skill-package.sh`

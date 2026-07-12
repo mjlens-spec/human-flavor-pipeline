@@ -67,7 +67,7 @@ if [[ "$OUTPUT" == "$ROOT"/* ]] && [[ "$OUTPUT" != "$ROOT/skills/"* ]]; then
   exit 2
 fi
 
-required=(SKILL.md patterns references corpus agents/openai.yaml LICENSE)
+required=(SKILL.md patterns references corpus agents/openai.yaml scripts/check-fact-integrity.py tests/check-precision.py tests/check-fact-integrity.py tests/fixtures/18-precision-cases.jsonl tests/fixtures/19-recall-floor.jsonl tests/fixtures/20-fact-integrity-cases.jsonl tests/golden LICENSE)
 for entry in "${required[@]}"; do
   [ -e "$ROOT/$entry" ] || {
     echo "缺少打包必需资源: $entry" >&2
@@ -78,7 +78,7 @@ done
 stage_root="$(mktemp -d "${TMPDIR:-/tmp}/human-flavor-pipeline-package.XXXXXX")"
 trap 'rm -rf "$stage_root"' EXIT
 package="$stage_root/human-flavor-pipeline"
-mkdir -p "$package/agents"
+mkdir -p "$package/agents" "$package/scripts" "$package/tests/fixtures" "$package/tests/golden"
 
 cp "$ROOT/SKILL.md" "$package/SKILL.md"
 
@@ -93,6 +93,15 @@ for directory in profiles packs; do
 done
 
 cp "$ROOT/agents/openai.yaml" "$package/agents/openai.yaml"
+cp "$ROOT/scripts/check-fact-integrity.py" "$package/scripts/check-fact-integrity.py"
+cp "$ROOT/tests/check-precision.py" "$package/tests/check-precision.py"
+cp "$ROOT/tests/check-fact-integrity.py" "$package/tests/check-fact-integrity.py"
+cp "$ROOT/tests/fixtures/18-precision-cases.jsonl" "$package/tests/fixtures/18-precision-cases.jsonl"
+cp "$ROOT/tests/fixtures/19-recall-floor.jsonl" "$package/tests/fixtures/19-recall-floor.jsonl"
+cp "$ROOT/tests/fixtures/20-fact-integrity-cases.jsonl" "$package/tests/fixtures/20-fact-integrity-cases.jsonl"
+for golden_file in README.md cases.jsonl cases.md run_eval.py test_run_eval.py; do
+  cp "$ROOT/tests/golden/$golden_file" "$package/tests/golden/$golden_file"
+done
 cp "$ROOT/LICENSE" "$package/LICENSE"
 
 rm -rf "$OUTPUT"

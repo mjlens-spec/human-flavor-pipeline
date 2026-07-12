@@ -1,0 +1,20 @@
+{"id":"pass_all_categories","before":"截至 2026-07-13，v1.2.3 的转化率为 12.5%，预算 ¥1,200。负责人说「本周交付」。运行 `python app.py --limit 3`，保留 {{owner}}。","after":"负责人仍说“本周交付”。截至 2026 年 7 月 13 日，版本 v1.2.3 的转化率为 12.5％，预算 ¥1,200；请保留 {{owner}}，并运行 `python app.py --limit 3`。","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}
+{"id":"fail_number_missing","before":"本轮共检查 3 组样本，结果已归档。","after":"本轮样本已经检查并归档。","expected":{"ok":false,"missing":[{"kind":"number","value":"3"}],"changed":[],"added":[]}}
+{"id":"fail_number_changed","before":"本轮共检查 3 组样本。","after":"本轮共检查 4 组样本。","expected":{"ok":false,"missing":[],"changed":[{"kind":"number","before":"3","after":"4"}],"added":[]}}
+{"id":"fail_invented_added","before":"用户反馈已经整理。","after":"17 位用户反馈已经整理。","expected":{"ok":false,"missing":[],"changed":[],"added":[{"kind":"number","value":"17"}]}}
+{"id":"pass_explicit_allow_added","before":"用户反馈已经整理。","after":"17 位用户反馈已经整理。","allow_added":true,"expected":{"ok":true,"missing":[],"changed":[],"added":[{"kind":"number","value":"17"}]}}
+{"id":"fail_quote_changed","before":"负责人说「周五上线」。","after":"负责人说「周六上线」。","expected":{"ok":false,"missing":[],"changed":[{"kind":"quote","before":"「周五上线」","after":"「周六上线」"}],"added":[]}}
+{"id":"pass_quote_delimiter_change","before":"负责人说「周五上线」。","after":"负责人说“周五上线”。","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}
+{"id":"pass_placeholders_retained","before":"请填写 [产品名]、{{owner}}、XXXX-XX-XX，并保留 #47b。","after":"请保留 #47b，并填写 {{owner}}、[产品名] 和 XXXX-XX-XX。","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}
+{"id":"fail_placeholder_missing","before":"模板包含 [产品名] 和 {{owner}}。","after":"模板只保留 [产品名]。","expected":{"ok":false,"missing":[{"kind":"placeholder","value":"{{owner}}"}],"changed":[],"added":[]}}
+{"id":"fail_code_changed","before":"执行 `python app.py --limit 3`。","after":"执行 `python app.py --limit 5`。","expected":{"ok":false,"missing":[],"changed":[{"kind":"code","before":"`python app.py --limit 3`","after":"`python app.py --limit 5`"}],"added":[]}}
+{"id":"pass_fenced_code_marker_change","before":"示例：\n```python\nlimit = 3\n```","after":"示例：\n~~~python\nlimit = 3\n~~~","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}
+{"id":"fail_date_changed","before":"上线日是 2026-07-13。","after":"上线日是 2026-07-14。","expected":{"ok":false,"missing":[],"changed":[{"kind":"date","before":"2026-07-13","after":"2026-07-14"}],"added":[]}}
+{"id":"fail_version_changed","before":"当前版本为 v1.2.3。","after":"当前版本为 v1.2.4。","expected":{"ok":false,"missing":[],"changed":[{"kind":"version","before":"v1.2.3","after":"v1.2.4"}],"added":[]}}
+{"id":"fail_percentage_changed","before":"退款率为 2.5%。","after":"退款率为 3.5%。","expected":{"ok":false,"missing":[],"changed":[{"kind":"percentage","before":"2.5%","after":"3.5%"}],"added":[]}}
+{"id":"fail_money_changed","before":"预算为人民币 3 万元。","after":"预算为人民币 4 万元。","expected":{"ok":false,"missing":[],"changed":[{"kind":"money","before":"人民币 3 万元","after":"人民币 4 万元"}],"added":[]}}
+{"id":"pass_oral_numbers_retained","before":"现场来了两三个人，等了十来分钟，销量涨了两成。","after":"等了十来分钟后，现场来了两三个人，销量涨了两成。","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}
+{"id":"fail_oral_number_changed","before":"现场来了两三个人，销量涨了两成。","after":"现场来了四五个人，销量涨了两成。","expected":{"ok":false,"missing":[],"changed":[{"kind":"number","before":"两三个人","after":"四五个人"}],"added":[]}}
+{"id":"pass_oral_approximate_numbers","before":"前后等了半小时，来了几十人，预算三万多元。","after":"预算三万多元；现场来了几十人，前后等了半小时。","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}
+{"id":"pass_oral_adjacent_non_numbers","before":"他一直负责这部分，也一样会参加复核。","after":"这部分一直由他负责，复核也一样会参加。","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}
+{"id":"pass_markdown_list_numbers","before":"苹果和梨都要保留。","after":"1. 苹果\n2. 梨","expected":{"ok":true,"missing":[],"changed":[],"added":[]}}

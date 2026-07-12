@@ -8,7 +8,7 @@ trap 'rm -rf "$temp_root"' EXIT
 package="$temp_root/output with spaces/human-flavor-pipeline"
 bash "$ROOT/scripts/build-skill-package.sh" --output "$package"
 
-required=(SKILL.md patterns references corpus agents/openai.yaml LICENSE)
+required=(SKILL.md patterns references corpus agents/openai.yaml scripts/check-fact-integrity.py tests/check-precision.py tests/check-fact-integrity.py tests/fixtures/18-precision-cases.jsonl tests/fixtures/19-recall-floor.jsonl tests/fixtures/20-fact-integrity-cases.jsonl tests/golden LICENSE)
 for entry in "${required[@]}"; do
   [ -e "$package/$entry" ] || {
     echo "安装包缺少必需资源: $entry" >&2
@@ -28,7 +28,7 @@ for directory in profiles packs; do
   fi
 done
 
-expected_top_level=$'LICENSE\nSKILL.md\nagents\ncorpus\npatterns\nreferences'
+expected_top_level=$'LICENSE\nSKILL.md\nagents\ncorpus\npatterns\nreferences\nscripts\ntests'
 for directory in packs profiles; do
   [ -e "$ROOT/$directory" ] && expected_top_level="${expected_top_level}"$'\n'"$directory"
 done
@@ -47,6 +47,12 @@ for directory in patterns references corpus profiles packs; do
   fi
 done
 cmp "$ROOT/agents/openai.yaml" "$package/agents/openai.yaml"
+cmp "$ROOT/scripts/check-fact-integrity.py" "$package/scripts/check-fact-integrity.py"
+cmp "$ROOT/tests/check-precision.py" "$package/tests/check-precision.py"
+cmp "$ROOT/tests/check-fact-integrity.py" "$package/tests/check-fact-integrity.py"
+for golden_file in README.md cases.jsonl cases.md run_eval.py test_run_eval.py; do
+  cmp "$ROOT/tests/golden/$golden_file" "$package/tests/golden/$golden_file"
+done
 cmp "$ROOT/LICENSE" "$package/LICENSE"
 
 python3 - "$ROOT/SKILL.md" "$package/SKILL.md" <<'PY'
@@ -70,7 +76,7 @@ if not re.search(r"(?m)^metadata:\s*\n(?:[ \t]+.*\n)*?[ \t]+version:\s*\S+", fro
 
 resource_pattern = re.compile(
     r"(?<![A-Za-z0-9_./-])"
-    r"((?:patterns|references|corpus|profiles|packs)/[A-Za-z0-9_./*-]+)"
+    r"((?:patterns|references|corpus|profiles|packs|scripts|tests)/[A-Za-z0-9_./*-]+)"
 )
 references = sorted(set(resource_pattern.findall(packaged)))
 if not references:
@@ -116,5 +122,13 @@ if [ -n "$quick_validate" ]; then
 else
   echo "提示: 未找到官方 quick_validate.py，已跳过官方校验。可设置 QUICK_VALIDATE=/path/to/quick_validate.py 后重跑。"
 fi
+
+(
+  cd "$package"
+  python3 tests/check-precision.py
+  python3 tests/check-fact-integrity.py --fixtures
+  python3 tests/golden/run_eval.py validate
+  python3 -m unittest tests/golden/test_run_eval.py
+)
 
 echo "skill package check ok"

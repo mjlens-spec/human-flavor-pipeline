@@ -4,6 +4,17 @@
 
 ---
 
+## 1.0.0:可信编辑闭环
+
+1.0 不再以扩充禁词为主。核心变化是把事实保真、版本评测和个性化隔离做成可验证结构:
+
+- detect / review / full 三档补齐真实编辑工作流;
+- 确定性事实硬闸先于风格评分,新增事实不再靠「待核实」放行;
+- Golden 结构化并支持盲化 A/B,候选版本与 main 用 win / tie / loss 比较;
+- Core / Profile / Domain Pack 分开,公开安装默认不继承维护者偏好;
+- corpus 只按任务路由局部读取,不把营销方法论混成通用去味规则;
+- `SKILL.md` 回到编排层,详细协议按需加载。
+
 ## 为什么是六阶段,而不是一个大 prompt
 
 调研到的多数低质工具是「一个大 prompt 边读边改」,问题是检测和改写混在一起,改坏了事实也发现不了,且无法对单一环节调参。口碑较好的项目(humanizer-skill 的 4-pass、shuorenhua 的双遍审读、humanizer-de 的 5-pass)都把流程拆成可独立调参的阶段。本管线据此拆成六段,关键是检测与改写分离、收尾独立校验。
@@ -64,7 +75,7 @@
 - **新增口播笔调** —— 承重句短准,连接组织允许第一人称、反问、口头转场、适量软垫和自我修正。
 - **软垫词按功能判断** —— 「其实 / 就是 / 我觉得」在书面稿里常是填充,在口播里可能是呼吸和转场;只有无信息堆叠才扣分。
 - **承重句 / 连接组织拆分** —— 金句、判断、数字和事实是承重句,要准;解释、转场、回环和听众节奏是连接组织,可以松。
-- **私有笔调不入公开库** —— 具体主播的弹药库、节目母题、固定收尾、个人经历只适合放本地 `style-anchors.md` 或外部私有文档,公开 repo 只保留槽位和方法。
+- **私有笔调不入公开库** —— 具体主播的弹药库、节目母题、固定收尾、个人经历只适合放安装目录外的本地 Profile,公开 repo 只保留槽位和方法。
 - **golden 覆盖** —— 新增口播模型级用例,专测别把逐字稿洗成书面稿,也别为口播感发明事实。
 
 ## 0.7.0:召回护栏与外部锚(对抗 0.6 的精度偏置)
@@ -73,7 +84,7 @@
 
 - **检测下限(floor)＋ 召回测试** —— `precision-rules.json` 新增 4 条无例外 floor 规则(开场烘托 / 收尾套话 / 空强调 / PR 黑话),`tests/fixtures/19-recall-floor.jsonl` 用 `pos_*` 用例守住「真 slop 必被抓」。护栏测试从「只测不误报」变成「精度 + 召回」双向。
 - **否定先行:硬禁 → 密度门控** —— `不是 X 而是 Y` 单次放行(合法对比),同段 ≥2 次才判套路(`negation_first_cluster`),套用 0.6 自己给 fake_candor 的克制思路。
-- **单一真相源** —— 明确散文层(`banned-words.md` ＋ `user-taste.md`)对模型 canonical,`precision-rules.json` 是派生护栏契约;新增 `canonical_source` 字段。
+- **单一真相源(0.7 当时的结构)** —— 当时以 `banned-words.md` ＋ `user-taste.md` 为散文层 canonical。1.0 已把个人层迁出 Core,当前通用真相源为 `banned-words.md`,Profile 只作显式覆盖;`precision-rules.json` 是派生护栏契约。
 - **护栏 ≠ 正确,补模型级评测** —— `check-precision.py` 正名为 guardrail;新增 `tests/golden/`(before→after ＋ 五维 rubric,人 / LLM-judge 评),专测模型行为。
 - **外部权威锚** —— A–H 模式组与 floor 以 Wikipedia「Signs of AI Writing」背书;self-audit 终极一问「像不像有人有真实理由要写它」借自 best-humanizer-handbook。
 - **笔调必走** —— 有个人锚点时「写出自己的文风」从可选升为必走(小红书头条工作流的差异点)。

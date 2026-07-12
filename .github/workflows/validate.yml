@@ -31,5 +31,14 @@ jobs:
       - name: Check precision contract
         run: python3 tests/check-precision.py
 
+      - name: Check fact integrity fixtures
+        run: python3 tests/check-fact-integrity.py --fixtures
+
+      - name: Validate golden cases
+        run: python3 tests/golden/run_eval.py validate
+
+      - name: Test golden runner
+        run: python3 -m unittest tests/golden/test_run_eval.py
+
       - name: Check installable skill package
         run: bash tests/check-skill-package.sh

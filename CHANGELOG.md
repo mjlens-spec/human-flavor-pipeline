@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.0 - 2026-07-13
+
+可信编辑版。0.7–0.9 解决了「知道什么叫 AI 味」;1.0 开始证明「确实改对了,而且没有把别人的话写成作者经历」。
+
+- 新增 **review 模式**:评分 + 热区 + 3–8 处局部 Before / After,正式文档默认先 review
+- 新增 `scripts/check-fact-integrity.py`:数字、金额、日期、版本、引语、代码、占位符 missing / changed / added 硬闸,20 条确定性 fixture
+- 普通 transform **禁止新增事实**;标「待核实」也不能进入终稿。外部研究必须先给来源,并入输入后再编辑
+- Golden 改为结构化 JSONL + 可运行盲化 A/B runner,补 G7 / G9 的事实规则冲突
+- 新增 `profiles/default.md` / `profiles/lens.md`:公开安装不再自动继承维护者笔调
+- 新增 Marketing Agency Domain Pack 与 corpus 定向检索路由,不再全量加载公司语料
+- 人味质量分重构为「判断与动机 / 具体与保真 / 笔调连续性 / 节奏可读性 / 节制与信任」
+- `SKILL.md` 收缩为渐进加载编排层;详细编辑、报告和反馈回灌移入 references
+
 ## 0.9.2 - 2026-07-13
 
 安装与分发修复版。仓库规则完整,但旧的全局安装只复制根目录 `SKILL.md`,运行时缺少它引用的 `patterns/`、`references/` 与 `corpus/`;本版先修真实安装面,为 1.0 的可信编辑闭环打底。
@@ -8,7 +21,7 @@
 - 新增 `skills/human-flavor-pipeline/` 完整可安装包与安装后资源检查
 - Claude Code / Codex 统一消费同一个 `SKILL.md`;根目录 `AGENTS.md` 改为薄的仓库维护说明
 - 新增 `agents/openai.yaml`、GitHub Actions 与 Skill Creator 标准校验
-- 「机密内容不外发」改为授权流转边界:可定向送审和交付,不得发给未授权对象,不自动进入公开库
+- 高风险稿件的边界改为授权流转:可定向送审和交付,不得发给未授权对象,不自动进入公开库
 
 ## 0.9.1 - 2026-07-01
 

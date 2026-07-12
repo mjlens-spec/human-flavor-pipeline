@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "description": "确定性护栏契约(guardrail):供 precision/recall 测试加载,校验正则提示层调得准不准。绿 != skill 正确 —— 模型实际按散文层判断,模型级评测见 tests/golden/。",
-  "canonical_source": "对模型而言,patterns/banned-words.md 与 patterns/user-taste.md 的散文规则是唯一事实来源;本 JSON 是从散文派生的护栏镜像,新增规则须在散文层有对应条目。",
+  "canonical_source": "对通用模型行为而言,patterns/banned-words.md 是唯一事实来源;Profile 只提供显式启用的个人 / 团队覆盖。本 JSON 是从通用散文规则派生的护栏镜像,新增规则须在散文层有对应条目。",
   "calibration": {"profile": "通用主力 LLM(GPT-4/5 系、Claude 4 系)", "last_reviewed": "2026-06-18", "note": "AI 味词汇随模型迭代演化,floor 与词表需按当前主力模型定期复核"},
   "documentation": [
     {
