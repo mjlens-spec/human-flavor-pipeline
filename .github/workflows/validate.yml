@@ -1,0 +1,35 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Check version sync
+        run: bash tests/check-version-sync.sh
+
+      - name: Check snapshots
+        run: bash tests/check-snapshot-smoke.sh
+
+      - name: Check precision contract
+        run: python3 tests/check-precision.py
+
+      - name: Check installable skill package
+        run: bash tests/check-skill-package.sh

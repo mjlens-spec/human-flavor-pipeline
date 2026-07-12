@@ -1,0 +1,4 @@
+interface:
+  display_name: "Human Flavor Pipeline"
+  short_description: "诊断并改写简体中文 AI 腔文本，同时守住事实与原有笔调"
+  default_prompt: "使用 $human-flavor-pipeline 先诊断这份简体中文草稿的改写必要性，再按合适强度去 AI 味并核对事实。"

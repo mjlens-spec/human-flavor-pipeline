@@ -1,21 +1,40 @@
 #!/usr/bin/env bash
-# 从 SKILL.md 生成 AGENTS.md(Codex 入口)。
-# SKILL.md 是唯一事实来源:去掉其顶部 YAML frontmatter(Claude Code 的路由元数据),
-# 换上 Codex 头,正文与数据层引用原样保留。改规程改 SKILL.md 再重跑本脚本。
+# 生成仓库级薄 AGENTS.md。Codex 与 Claude Code 的运行时 Skill 都消费
+# 同一个 SKILL.md;AGENTS.md 只约束本仓库的维护流程,不复制完整 Skill 正文。
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-{
-  cat <<'HEADER'
-# human-flavor-pipeline · Codex / AGENTS.md 入口
+render() {
+  cat <<'EOF'
+# human-flavor-pipeline · 仓库维护说明
 
-> 本文件由 `scripts/build-agents.sh` 从 `SKILL.md` 自动生成,请勿手改。
-> 改操作规程请改 `SKILL.md`,然后重跑 `bash scripts/build-agents.sh`。
-> 这是给 Codex(及任何读取 AGENTS.md 的 agent)的入口;Claude Code 走同源的 `SKILL.md`。
-> 数据层 `patterns/` 与 `references/` 由两个工具共享,按需读取。
-HEADER
-  # 跳过第一段 YAML frontmatter(首行 --- 到下一个 --- 之间),其余原样输出(含正文里的 --- 分隔线)
-  awk 'NR==1 && $0=="---"{infm=1; next} infm && $0=="---"{infm=0; next} !infm{print}' SKILL.md
-} > AGENTS.md
+本仓库开发同名中文编辑 Skill。Claude Code 与 Codex 的运行时入口均为 `SKILL.md`;根目录 `AGENTS.md` 只负责仓库维护,不再复制完整改写规程。
 
-echo "已生成 AGENTS.md (来源 SKILL.md)"
+## 工作规则
+
+- 修改运行规程时改根目录 `SKILL.md` 及其直接引用的 `patterns/`、`references/`、`profiles/`、`packs/`。
+- `skills/human-flavor-pipeline/` 是生成的可安装目录,不要手改;运行 `bash scripts/build-skill-package.sh` 重建。
+- 只有在处理中文稿件去味任务时才读取完整 `SKILL.md`;版本维护、测试和仓库审计不预加载整套写作规则。
+- 保留用户已有改动和未跟踪文件,不要覆盖无关内容。
+- 提交前运行:
+  - `bash tests/check-version-sync.sh`
+  - `bash tests/check-snapshot-smoke.sh`
+  - `python3 tests/check-precision.py`
+  - `python3 tests/check-fact-integrity.py --self-test`
+  - `bash tests/check-skill-package.sh`
+EOF
+}
+
+if [[ "${1:-}" == "--check" ]]; then
+  expected="$(mktemp)"
+  trap 'rm -f "$expected"' EXIT
+  render > "$expected"
+  cmp -s "$expected" AGENTS.md || {
+    echo "AGENTS.md 未由当前 scripts/build-agents.sh 生成" >&2
+    exit 1
+  }
+  echo "AGENTS.md sync ok"
+else
+  render > AGENTS.md
+  echo "已生成薄 AGENTS.md (仓库维护入口)"
+fi

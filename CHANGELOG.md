@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.2 - 2026-07-13
+
+安装与分发修复版。仓库规则完整,但旧的全局安装只复制根目录 `SKILL.md`,运行时缺少它引用的 `patterns/`、`references/` 与 `corpus/`;本版先修真实安装面,为 1.0 的可信编辑闭环打底。
+
+- `SKILL.md` frontmatter 改为规范字段:`license: MIT` ＋ `metadata.version`
+- 新增 `skills/human-flavor-pipeline/` 完整可安装包与安装后资源检查
+- Claude Code / Codex 统一消费同一个 `SKILL.md`;根目录 `AGENTS.md` 改为薄的仓库维护说明
+- 新增 `agents/openai.yaml`、GitHub Actions 与 Skill Creator 标准校验
+- 「机密内容不外发」改为授权流转边界:可定向送审和交付,不得发给未授权对象,不自动进入公开库
+
 ## 0.9.1 - 2026-07-01
 
 术语去生硬化 + README 重排。用户觉得几个核心术语翻译腔偏重、README 版本记录堆成一段读不清楚,这版一起打磨。

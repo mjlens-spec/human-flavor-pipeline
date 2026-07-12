@@ -1,13 +1,13 @@
 # human-flavor-pipeline
 
-![version](https://img.shields.io/badge/version-0.9.1-blue.svg)
+![version](https://img.shields.io/badge/version-0.9.2-blue.svg)
 
-当前版本:v0.9.1
+当前版本:v0.9.2
 
-一条**中文「去 AI 味」集大成流水线**,**Claude Code 与 Codex 双入口**。它只判断文本是否需要改,不根据文风猜作者身份;改写时守住事实、语体与作者原有笔调。
+一条**中文「去 AI 味」集大成流水线**。Claude Code 与 Codex 共用同一个 `SKILL.md`;它只判断文本是否需要改,不根据文风猜作者身份,改写时守住事实、语体与作者原有笔调。
 
-- **Claude Code** 走 `SKILL.md`(技能格式,支持渐进式加载)
-- **Codex** 走根目录 `AGENTS.md`(由 `SKILL.md` 同源生成,避免漂移)
+- **Claude Code / Codex** 都走可安装目录里的 `SKILL.md`
+- 根目录 `AGENTS.md` 只约束仓库维护,不再复制完整 Skill 正文
 - **只吃单 system prompt 的工具**(ChatGPT / Gemini 等)走 `SKILL-lite.md`
 - `patterns/` 与 `references/` 数据层两个工具共享
 
@@ -19,6 +19,7 @@
 
 ## 版本沿革(最新在前)
 
+- **v0.9.2**:修复分发外壳。新增完整可安装 Skill 目录、安装后资源检查、标准 frontmatter、OpenAI UI 元数据与 CI;Claude Code / Codex 统一消费 `SKILL.md`,根目录 `AGENTS.md` 收缩为仓库维护说明。机密 / 高风险稿按授权对象定向流转,不再笼统禁止外发。
 - **v0.9.1**:术语去生硬化。「声口」改叫「笔调」,「场景门」改叫「适用场景匹配」,「四维门控」改叫「四项维度权衡」,更贴近母语表达。这份版本记录本身也从一段挤在一起的引用块拆成了现在的列表。
 - **v0.9.0**:新增 `corpus/` 项目语料库。首次系统性提炼头条易公司知识库,涵盖公司通案、跨行业方法论、华东项目案例(81 条)与措辞词汇表。脱敏经多路 agent 通读复核,最后由用户本人逐字终审公开,详见 [`corpus/README.md`](corpus/README.md)。
 - **v0.8.5**:白名单补达人业务黑话,如筛选漏斗、金字塔分层、人群资产分级。新增两条判据:表格自证套路、多层结构叠加。口播补两条反面模式:材料引入式冷开场、系列回扣不硬编期号。达人脚本落成六段式可执行骨架。
@@ -92,31 +93,13 @@ AI 味与人味双评分负责表达质量;个人偏好、事实 / 来源风险�
 
 ## 安装与使用
 
-### Claude Code
+### Claude Code / Codex
 
 ```bash
-git clone https://github.com/mjlens-spec/human-flavor-pipeline.git ~/.claude/skills/human-flavor-pipeline
+npx skills add mjlens-spec/human-flavor-pipeline -g -y -s human-flavor-pipeline
 ```
 
-新开会话后,说「帮我去 AI 味」「这段太 AI 了改一下」「降 AI 味」,或粘贴文本要求改写,skill 会按 `SKILL.md` 的 `description` 自动触发;也可 `/human-flavor-pipeline` 显式调。
-
-### Codex
-
-Codex 读取 `AGENTS.md`。两种用法:
-
-```bash
-# A. 作为项目级指令:在仓库目录内启动 Codex,根目录 AGENTS.md 自动加载
-git clone https://github.com/mjlens-spec/human-flavor-pipeline.git
-cd human-flavor-pipeline && codex
-
-# B. 作为全局指令:把内容并入(或软链)到 ~/.codex/AGENTS.md
-git clone https://github.com/mjlens-spec/human-flavor-pipeline.git ~/.humanizer
-ln -s ~/.humanizer/AGENTS.md ~/.codex/AGENTS.md   # 或按需 include
-```
-
-然后在 Codex 里贴稿说「去 AI 味」即按同一套六阶段执行。
-
-> `AGENTS.md` 由 `SKILL.md` 经 `scripts/build-agents.sh` 生成。改规程只改 `SKILL.md`,再跑 `bash scripts/build-agents.sh` 重新生成,**不要手改 AGENTS.md**,以免与 Claude Code 入口漂移。
+安装器应选择 `skills/human-flavor-pipeline/` 下的完整运行包,而不是只复制仓库根目录的单个 `SKILL.md`。新开会话后说「帮我去 AI 味」「这段太 AI 了改一下」「降 AI 味」即可触发。
 
 ## 目录结构
 
