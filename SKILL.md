@@ -3,7 +3,7 @@ name: human-flavor-pipeline
 description: 简体中文已有稿件的「去 AI 味」体检、局部审校与保真改写。支持 detect 只读诊断、review 局部 Before/After、full 完整改写;守住数字、实体、引语、语体与作者笔调。用户说「去 AI 味」「改得说人话」「降 AI 味」「润色成人写的」「这段太 AI 了」或要求中文稿件 humanize 时使用。不要用于从零写作、英文正文、翻译或只改格式的任务。
 license: MIT
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # human-flavor-pipeline · 中文保真编辑流水线

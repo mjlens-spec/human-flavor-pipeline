@@ -8,6 +8,7 @@
       "path": "patterns/banned-words.md",
       "required_markers": [
         "不做裸字符串定罪",
+        "自造术语(B 组开放类,不分 Tier)",
         "假坦诚开场",
         "格言公式 / 伪洞察枢纽",
         "连续短句造戏剧感",
@@ -23,6 +24,7 @@
     {
       "path": "patterns/catalog/patterns.md",
       "required_markers": [
+        "9a. 自造术语替代通行说法",
         "22b. 格言公式 / 伪洞察枢纽",
         "23a. 标题后复述标题",
         "23b. 变更叙事腔",

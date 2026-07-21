@@ -1,8 +1,8 @@
 # human-flavor-pipeline
 
-![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![version](https://img.shields.io/badge/version-1.1.0-blue.svg)
 
-当前版本:v1.0.0
+当前版本:v1.1.0
 
 一条**中文「去 AI 味」集大成流水线**。Claude Code 与 Codex 共用同一个 `SKILL.md`;它只判断文本是否需要改,不根据文风猜作者身份,改写时守住事实、语体与作者原有笔调。
 
@@ -19,6 +19,7 @@
 
 ## 版本沿革(最新在前)
 
+- **v1.1.0**:「自造词」立为独立诊断项。行业已有通行术语的概念必须用通行说法,不接受 AI 发明的比喻性替代(典型:把「投放产品 / 广告产品」写成「投放路径」)。操作层入 B 组开放类、深查层新增 #9a,计分与 Tier 1 同档;有定义、被复用的自研方法论命名(「荷花模型」这类公式化命名法)与平台产品名明确放行,防误伤。
 - **v1.0.0**:从规则集升级为可信编辑系统。新增 review 局部审校、确定性事实硬闸、可运行 Golden 盲化 A/B、Default / Lens Profile 隔离、Marketing Agency Domain Pack 与 corpus 路由。普通改写不得新增事实,即使标「待核实」也先判失败。
 - **v0.9.2**:修复分发外壳。新增完整可安装 Skill 目录、安装后资源检查、标准 frontmatter、OpenAI UI 元数据与 CI;Claude Code / Codex 统一消费 `SKILL.md`,根目录 `AGENTS.md` 收缩为仓库维护说明。机密 / 高风险稿按授权对象定向流转,不再笼统禁止外发。
 - **v0.9.1**:术语去生硬化。「声口」改叫「笔调」,「场景门」改叫「适用场景匹配」,「四维门控」改叫「四项维度权衡」,更贴近母语表达。这份版本记录本身也从一段挤在一起的引用块拆成了现在的列表。
