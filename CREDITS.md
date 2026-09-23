@@ -20,6 +20,8 @@ qu-ai-wei 本身受 [`humanizer`](https://github.com/blader/humanizer)(作者 Si
 
 humanizer-skill(Aboudjem)· shuorenhua(说人话)· Humanizer-zh(op7418)· humanize-text · StealthHumanizer · humanizer-de。详见 `references/design-notes.md`。
 
+1.2.0 的 `patterns/catalog/patterns.md` #5a 模糊关联、#27b 与假想敌辩论,选题来自 [Humanizer-zh](https://github.com/op7418/Humanizer-zh)(MIT,Copyright (c) 2026 歸藏)2026-09-23 修订的 #14、#5;定义、判定条件与例句为本项目重写,未复制上游文本。固定 commit 见 [`UPSTREAM.lock`](UPSTREAM.lock)。
+
 ## 范文锚点(原创脱敏,无第三方引用)
 
 `patterns/exemplars.md` 的范文锚点均为**原创、脱敏的示范例**,只演示写作手法,**不含真实品牌 / 公司案例名,不引用第三方原文**,故无需第三方署名,也不附外部出处。

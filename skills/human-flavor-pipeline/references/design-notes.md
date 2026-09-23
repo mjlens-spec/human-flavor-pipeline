@@ -25,6 +25,7 @@
 - 0–100 AI-tell score 作首尾两道闸(humanizer-skill)
 - voice profiles 作「句长 ＋ 用词 ＋ 结构」捆绑,而非词汇皮肤(humanizer-skill)
 - 质量评分矩阵,五维各打分(Humanizer-zh)→ 本管线的人味质量分 0–50
+- 模糊关联、与假想敌辩论两条模式(Humanizer-zh 2026-09-23 修订)→ 深查层 #5a、#27b(1.2.0)
 - 节奏校准(检查机械等长与连续短句,不设固定句长目标)
 - 回译式关键信息保真思路(humanize-text)→ 保护区 ＋ 事实保真闸
 - 多模型 / 独立复核(StealthHumanizer)→ 高风险派独立子 agent
