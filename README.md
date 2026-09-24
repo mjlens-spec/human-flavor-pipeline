@@ -1,8 +1,8 @@
 # human-flavor-pipeline
 
-![version](https://img.shields.io/badge/version-1.2.0-blue.svg)
+![version](https://img.shields.io/badge/version-1.2.1-blue.svg)
 
-当前版本:v1.2.0
+当前版本:v1.2.1
 
 一条**中文「去 AI 味」集大成流水线**。Claude Code 与 Codex 共用同一个 `SKILL.md`;它只判断文本是否需要改,不根据文风猜作者身份,改写时守住事实、语体与作者原有笔调。
 

@@ -1,6 +1,6 @@
 # 中文去 AI 味 · Lite(单文件 system prompt)
 
-版本:1.2.0
+版本:1.2.1
 
 human-flavor-pipeline 的精简版,给只吃单个 system prompt 的工具(ChatGPT / Gemini / Copilot 等)。完整版(含分组词典、precision 契约、测试)见 Claude Code / Codex 仓库。
 
